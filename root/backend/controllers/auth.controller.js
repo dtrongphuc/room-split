@@ -1,5 +1,12 @@
+const jwt = require("jsonwebtoken");
 var User = require("../models/user.model");
 var Room = require("../models/room.model");
+
+function generateAccessToken(username) {
+	return jwt.sign(username, process.env.ACCESS_TOKEN_SECRET, {
+		expiresIn: "15days",
+	});
+}
 
 exports.createUser = async function (req, res) {
 	let username = req.body.username;
@@ -14,28 +21,26 @@ exports.createUser = async function (req, res) {
 		realname: realName,
 		room: room._id,
 	});
-
-	user.save()
-		.then((data) => res.send(data))
-		.catch((err) =>
-			res.status(500).send({
-				message: err.message || "error when save user data",
-			})
-		);
+	const token = generateAccessToken({ username: username });
+	await user.save();
+	res.json(token);
 };
 
 exports.login = function (req, res) {
 	let username = req.body.username;
 
-	User.findOne({ username: username })
-		.populate("room")
-		.exec((err, data) => {
-			if (data) {
-				res.send(data);
-			} else {
-				res.status(404).send({
-					message: err.message || "Not found",
-				});
-			}
-		});
+	const token = generateAccessToken({ username: username });
+
+	res.json(token);
+	// User.findOne({ username: username })
+	// 	.populate("room")
+	// 	.exec((err, data) => {
+	// 		if (data) {
+	// 			res.send(data);
+	// 		} else {
+	// 			res.status(404).send({
+	// 				message: err.message || "Not found",
+	// 			});
+	// 		}
+	// 	});
 };
