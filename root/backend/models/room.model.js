@@ -3,10 +3,11 @@ var Schema = mongoose.Schema;
 
 var roomSchema = new Schema(
 	{
-		code: Number,
+		code: String,
 		name: String,
 		price: Number,
 		memberCount: Number,
+		otherPrice: Number,
 	},
 	{ versionKey: false }
 );

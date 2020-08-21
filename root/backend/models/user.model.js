@@ -6,7 +6,7 @@ var userSchema = new Schema(
 		room: {
 			type: Schema.Types.ObjectId,
 			ref: "Room",
-			required: true,
+			required: false,
 		},
 		username: String,
 		password: String,

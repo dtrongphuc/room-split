@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const app = express();
 const port = process.env.PORT || 8080;
 
-var authRoute = require("./routes/auth.route");
+var initAuthAPIs = require("./routes/apiAuth.route");
 
 mongoose
 	.connect(process.env.MONGO_URI, {
@@ -29,9 +29,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // parser application/json
 app.use(bodyParser.json());
 
-app.use("/api/auth", authRoute);
+initAuthAPIs(app);
 app.get("/", (req, res) => {
-	res.send("Hello");
+	res.redirect("/api");
+});
+
+app.get("/api", (req, res) => {
+	res.send({
+		message: "room-split-api",
+	});
 });
 
 app.listen(port, () => {
