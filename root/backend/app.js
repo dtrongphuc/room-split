@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
@@ -17,11 +18,15 @@ mongoose
 	.then(() => console.log("connected to database"))
 	.catch((error) => console.log("error occured", error));
 
-app.use(
-	cors({
-		origin: `http://localhost:8081`,
-	})
-);
+const corsConfig = {
+	origin: "http://localhost:3000",
+	credentials: true,
+};
+
+app.use(cors(corsConfig));
+app.options("*", cors(corsConfig));
+
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // parser application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));

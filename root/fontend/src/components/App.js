@@ -4,6 +4,7 @@ import Header from "./Header";
 import RoomInfo from "./RoomInfo";
 import Main from "./Main";
 
+import "antd/dist/antd.css";
 import "./App.css";
 
 function App() {

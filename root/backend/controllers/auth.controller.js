@@ -45,15 +45,29 @@ let login = async (req, res) => {
 								tokenList: {},
 							});
 						}
+
 						tokenList[refreshToken] = {
 							accessToken,
 							refreshToken,
 						};
+
 						await Token.findOneAndUpdate(
 							{},
 							{ tokenList: tokenList },
 							{ useFindAndModify: false }
 						);
+
+						res.cookie("accessToken", accessToken, {
+							httpOnly: true,
+							signed: true,
+							maxAge: parseInt(process.env.COOKIE_LIFE),
+						});
+
+						res.cookie("refreshToken", refreshToken, {
+							httpOnly: true,
+							signed: true,
+							maxAge: 864000000 * 365,
+						});
 
 						return res
 							.status(200)
