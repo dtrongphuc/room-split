@@ -1,9 +1,8 @@
 import React from "react";
 import { Accordion, Card } from "react-bootstrap";
-import { ExpandMore } from "@material-ui/icons";
+import { DownOutlined } from "@ant-design/icons";
 import History from "./History";
 import "./Main.css";
-
 export default class Main extends React.Component {
 	render() {
 		return (
@@ -13,7 +12,7 @@ export default class Main extends React.Component {
 						<Card.Header className="d-flex justify-content-between">
 							<h4>Member name</h4>
 							<Accordion.Toggle
-								as={ExpandMore}
+								as={DownOutlined}
 								eventKey="0"
 								style={{ cursor: "pointer" }}
 							/>

@@ -1,32 +1,43 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Header from "./Header";
-import RoomInfo from "./RoomInfo";
-import Main from "./Main";
+import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import "antd/dist/antd.css";
+import LoginPage from "./pages/Login";
+import HomePage from "./pages/HomePage";
+import PrivateRoute from "./PrivateRoute";
+
+import { authService } from "../services/auth.service";
+// import "antd/dist/antd.css";
 import "./App.css";
 
-function App() {
-	return (
-		<div className="App">
-			<header className="Header">
-				<Header />
-			</header>
-			<main className="Main">
-				<Container fluid={"xl"}>
-					<Row>
-						<Col sm={4} className="main-left">
-							<RoomInfo />
-						</Col>
-						<Col sm={8} className="main-right">
-							<Main />
-						</Col>
-					</Row>
-				</Container>
-			</main>
-		</div>
-	);
+class App extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isLogged: false,
+		};
+	}
+
+	render() {
+		return (
+			<Router>
+				<div className="App">
+					<Switch>
+						<Route path="/login">
+							<LoginPage />
+						</Route>
+						<PrivateRoute
+							exact
+							path="/"
+							logged={authService.isUserLogged}
+						>
+							<HomePage />
+						</PrivateRoute>
+					</Switch>
+				</div>
+			</Router>
+		);
+	}
 }
 
 export default App;

@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import DataService from "../../httpService";
+import { withRouter } from "react-router-dom";
 
+import { authService } from "../../services/auth.service";
 import "./Login.css";
 
-export default class Login extends Component {
+class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -57,23 +56,25 @@ export default class Login extends Component {
 	}
 
 	onSubmit() {
-		var data = {
-			username: this.state.username,
-			password: this.state.password,
-		};
+		authService.login(this.state.username, this.state.password);
+		this.props.history.push("/");
+		// var data = {
+		// 	username: this.state.username,
+		// 	password: this.state.password,
+		// };
 
-		DataService.postLogin(data)
-			.then((response) => {
-				if (response) {
-					this.setState({
-						submit: true,
-					});
-					console.log(response);
-				}
-			})
-			.catch((e) => {
-				console.log(e);
-			});
+		// DataService.postLogin(data)
+		// 	.then((response) => {
+		// 		if (response) {
+		// 			this.setState({
+		// 				submit: true,
+		// 			});
+		// 			console.log(response);
+		// 		}
+		// 	})
+		// 	.catch((e) => {
+		// 		console.log(e);
+		// 	});
 	}
 
 	render() {
@@ -150,3 +151,4 @@ export default class Login extends Component {
 		);
 	}
 }
+export default withRouter(Login);

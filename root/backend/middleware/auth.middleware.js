@@ -5,7 +5,11 @@ const accessTokenSecret =
 
 exports.isAuth = async (req, res, next) => {
 	const tokenFromClient =
-		req.body.token || req.query.token || req.headers["x-access-token"];
+		req.headers["cookie"] ||
+		req.body.token ||
+		req.query.token ||
+		req.headers["x-access-token"];
+	console.log(tokenFromClient);
 	if (tokenFromClient) {
 		try {
 			// Giải mã xem token có hợp lệ không ?
