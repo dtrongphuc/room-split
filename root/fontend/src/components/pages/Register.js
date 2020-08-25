@@ -1,12 +1,13 @@
 import React, { useState, useCallback } from "react";
 import { Form, Row, Col, Button, Alert } from "react-bootstrap";
 import { UserOutlined, LockOutlined, SmileOutlined } from "@ant-design/icons";
-import { withRouter } from "react-router-dom";
-
 import { authService } from "../../services/auth.service";
 import "./Auth.css";
+//import { useHistory } from "react-router-dom";
 
 function Register() {
+	//let history = useHistory();
+
 	const [realname, setRealname] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -30,19 +31,19 @@ function Register() {
 		setPasswordConfirm(e.target.value);
 	}, []);
 
-	const onInputFocus = useCallback((filterKey) => {
+	const onInputFocus = (filterKey) => {
 		let formGroup = document.querySelector(
 			`.form-group-cs[form-filter=${filterKey}]`
 		);
 		formGroup.classList.add("focus-active");
-	}, []);
+	};
 
-	const onFocusOut = useCallback((filterKey) => {
+	const onFocusOut = (filterKey) => {
 		let formGroup = document.querySelector(
 			`.form-group-cs[form-filter=${filterKey}]`
 		);
 		formGroup.classList.remove("focus-active");
-	}, []);
+	};
 
 	const handleRegister = useCallback(() => {
 		authService
@@ -54,9 +55,10 @@ function Register() {
 			})
 			.catch((err) => {
 				console.log(err);
-				setMessage(err.error["message"]);
+				setSuccessful(false);
+				setMessage((err && err.error["message"]) || "Có lỗi đã xảy ra");
 			});
-		//this.props.history.push("/");
+		//history.push("/");
 	}, [realname, username, password, passwordConfirm]);
 
 	return successful ? (
@@ -175,4 +177,4 @@ function Register() {
 		</div>
 	);
 }
-export default withRouter(Register);
+export default Register;

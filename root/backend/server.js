@@ -8,7 +8,8 @@ const mongoose = require("mongoose");
 const app = express();
 const port = process.env.PORT || 8080;
 
-var initAuthAPIs = require("./routes/apiAuth.route");
+const initAuthAPIs = require("./routes/api-Auth.route");
+const initMainAPIs = require("./routes/api-Main.route");
 
 mongoose
 	.connect(process.env.MONGO_URI, {
@@ -35,6 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 initAuthAPIs(app);
+initMainAPIs(app);
 app.get("/", (req, res) => {
 	res.redirect("/api");
 });

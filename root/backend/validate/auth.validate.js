@@ -73,7 +73,10 @@ exports.postJoinRoom = (req, res, next) => {
 		Room.findOne({ code: roomCode }).then((room) => {
 			if (!room) {
 				return res.status(404).send({
-					message: "Room code is not exist.",
+					success: false,
+					error: {
+						message: "Room code is not exist.",
+					},
 				});
 			}
 			next();
@@ -85,12 +88,15 @@ exports.postJoinRoom = (req, res, next) => {
 
 exports.postCreateRoom = (req, res, next) => {
 	try {
-		let roomName = req.body.roomname;
+		let roomName = req.body.name;
 		let price = req.body.price;
 
 		if (isEmpty(roomName) || isEmpty(price.toString())) {
 			return res.status(403).send({
-				message: "Input is empty.",
+				success: false,
+				error: {
+					message: "Input is empty.",
+				},
 			});
 		} else {
 			next();

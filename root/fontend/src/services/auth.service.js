@@ -4,6 +4,8 @@ export const authService = {
 	login,
 	logout,
 	register,
+	joinRoom,
+	createRoom,
 	isUserLogged,
 };
 
@@ -42,6 +44,44 @@ function register(realname, username, password, passwordConfirm) {
 				if (err && err.response) {
 					reject(err.response.data);
 				}
+			});
+	});
+}
+
+function joinRoom(username, code) {
+	return new Promise((resolve, reject) => {
+		DataService.postJoinRoom({ username, code })
+			.then((res) => {
+				if (res) {
+					resolve({ success: true });
+				}
+			})
+			.catch((err) => {
+				if (err && err.response) {
+					reject(err.response.data);
+				}
+			});
+	});
+}
+
+function createRoom(username, name, price, otherPrice) {
+	return new Promise((resolve, reject) => {
+		DataService.postCreateRoom({
+			username,
+			name,
+			price,
+			otherPrice,
+		})
+			.then((res) => {
+				if (res) {
+					resolve({ success: true });
+				}
+			})
+			.catch((err) => {
+				if (err && err.response) {
+					reject(err.response.data);
+				}
+				reject(err);
 			});
 	});
 }

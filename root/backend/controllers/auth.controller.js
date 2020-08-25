@@ -3,7 +3,6 @@ var randomize = require("randomatic");
 var User = require("../models/user.model");
 var Room = require("../models/room.model");
 var Token = require("../models/token.model");
-const debug = console.log.bind(console);
 
 const accessTokenSecret =
 	process.env.ACCESS_TOKEN_SECRET || "access-token-secret-@dtrongphuc";
