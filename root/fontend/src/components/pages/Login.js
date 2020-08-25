@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 
 import { authService } from "../../services/auth.service";
-import "./Login.css";
+import "./Auth.css";
 
 class Login extends Component {
 	constructor(props) {
@@ -18,7 +18,7 @@ class Login extends Component {
 		this.onChangeUsername = this.onChangeUsername.bind(this);
 		this.onChangePassword = this.onChangePassword.bind(this);
 		this.onInputFocus = this.onInputFocus.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
+		this.handleLogin = this.handleLogin.bind(this);
 	}
 
 	componentDidMount() {
@@ -55,26 +55,9 @@ class Login extends Component {
 		formGroup.classList.remove("focus-active");
 	}
 
-	onSubmit() {
+	handleLogin() {
 		authService.login(this.state.username, this.state.password);
 		this.props.history.push("/");
-		// var data = {
-		// 	username: this.state.username,
-		// 	password: this.state.password,
-		// };
-
-		// DataService.postLogin(data)
-		// 	.then((response) => {
-		// 		if (response) {
-		// 			this.setState({
-		// 				submit: true,
-		// 			});
-		// 			console.log(response);
-		// 		}
-		// 	})
-		// 	.catch((e) => {
-		// 		console.log(e);
-		// 	});
 	}
 
 	render() {
@@ -82,10 +65,11 @@ class Login extends Component {
 		return submit ? (
 			<h2>Login...</h2>
 		) : (
-			<div className="login d-flex align-items-center justify-content-center">
+			<div className="auth d-flex align-items-center justify-content-center">
+				<div className="bg"></div>
 				<div className="wrapper">
-					<h2 className="login-title text-center">Đăng nhập</h2>
-					<Form className="login-form d-flex align-content-center justify-content-center flex-column">
+					<h2 className="auth-title text-center">Đăng nhập</h2>
+					<Form className="auth-form d-flex align-items-center justify-content-center flex-column">
 						<Form.Group
 							as={Row}
 							noGutters={true}
@@ -95,7 +79,7 @@ class Login extends Component {
 						>
 							<span className="line" />
 							<Form.Label className="text-right form-label">
-								<UserOutlined className="login-icon" />
+								<UserOutlined className="auth-icon" />
 							</Form.Label>
 							<Col sm="10">
 								<Form.Control
@@ -104,7 +88,7 @@ class Login extends Component {
 									required
 									value={username}
 									onChange={this.onChangeUsername}
-									className="login-input px-3"
+									className="auth-input px-3"
 									onFocus={() =>
 										this.onInputFocus("username")
 									}
@@ -122,7 +106,7 @@ class Login extends Component {
 						>
 							<span className="line" />
 							<Form.Label className="text-right form-label">
-								<LockOutlined className="login-icon" />
+								<LockOutlined className="auth-icon" />
 							</Form.Label>
 							<Col sm="10">
 								<Form.Control
@@ -131,7 +115,7 @@ class Login extends Component {
 									required
 									onChange={this.onChangePassword}
 									placeholder="Mật khẩu"
-									className="login-input px-3"
+									className="auth-input px-3"
 									onFocus={() =>
 										this.onInputFocus("password")
 									}
@@ -141,7 +125,7 @@ class Login extends Component {
 						</Form.Group>
 						<Button
 							className="text-center btn"
-							onClick={this.onSubmit}
+							onClick={this.handleLogin}
 						>
 							Đăng nhập
 						</Button>

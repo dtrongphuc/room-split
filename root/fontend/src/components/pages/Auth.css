@@ -1,16 +1,17 @@
-.login {
-	position: fixed;
+.bg {
 	background-image: url(/img/bg-01.jpg);
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
+	background-attachment: fixed;
+	position: fixed;
 	top: 0;
+	bottom: 0;
 	left: 0;
 	right: 0;
-	bottom: 0;
 }
 
-.login::before {
+.bg::before {
 	content: "";
 	display: block;
 	position: fixed;
@@ -21,11 +22,16 @@
 	background-color: rgba(0, 0, 0, 0.65);
 }
 
-.wrapper {
-	z-index: 1;
+.auth {
+	height: 100vh;
 }
 
-.login-title {
+.wrapper {
+	z-index: 1;
+	padding: 40px;
+}
+
+.auth-title {
 	font-family: "Quicksand", sans-serif;
 	font-size: 28px;
 	font-weight: 700;
@@ -33,14 +39,14 @@
 	margin-bottom: 2rem;
 }
 
-.login-form {
+.auth-form {
+	padding: 20px 0 16px 0;
 	width: 390px;
-	height: 330px;
 	background-color: #fff;
 	border-radius: 10px;
 }
 
-.login-icon {
+.auth-icon {
 	font-size: 18px;
 	color: #555;
 }
@@ -57,7 +63,7 @@
 	padding: 29px 0;
 }
 
-.login-input {
+.auth-input {
 	border: none;
 	width: 100%;
 	height: 50px;
@@ -66,7 +72,7 @@
 	outline: none;
 }
 
-.login-input:focus {
+.auth-input:focus {
 	outline: none;
 }
 
@@ -94,7 +100,7 @@
 	width: 40px;
 }
 
-.focus-active > .form-label > .login-icon {
+.focus-active > .form-label > .auth-icon {
 	color: #d5577f;
 }
 

@@ -22,32 +22,47 @@ exports.postRegister = (req, res, next) => {
 	let username = req.body.username;
 	let password = req.body.password;
 	let repassword = req.body.passwordConfirm;
+	let realname = req.body.realname;
 
 	try {
 		User.findOne({ username: username }).then((user) => {
 			if (user) {
-				return res.status(403).send({
-					message: "Username is existed.",
+				return res.status(406).send({
+					success: false,
+					error: {
+						message: "Username is existed.",
+					},
 				});
 			} else if (
 				isEmpty(username) ||
 				isEmpty(password) ||
-				isEmpty(repassword)
+				isEmpty(repassword) ||
+				isEmpty(realname)
 			) {
-				return res.status(403).send({
-					message: "Input is empty.",
+				return res.status(406).send({
+					success: false,
+					error: {
+						message: "Input is empty.",
+					},
 				});
 			} else if (password != repassword) {
-				return res.status(403).send({
-					message: "Password confirm is incorrect.",
+				return res.status(406).send({
+					success: false,
+					error: {
+						message: "Password confirm is incorrect.",
+					},
 				});
 			} else {
+				console.log("next");
 				next();
 			}
 		});
 	} catch (error) {
 		return res.status(403).send({
-			message: `${error}` || "Error.",
+			success: false,
+			error: {
+				message: `${error}` || "Error.",
+			},
 		});
 	}
 };
@@ -57,7 +72,7 @@ exports.postJoinRoom = (req, res, next) => {
 		let roomCode = req.body.code;
 		Room.findOne({ code: roomCode }).then((room) => {
 			if (!room) {
-				return res.status(403).send({
+				return res.status(404).send({
 					message: "Room code is not exist.",
 				});
 			}

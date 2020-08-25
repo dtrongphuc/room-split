@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
 import HomePage from "./pages/HomePage";
 import PrivateRoute from "./PrivateRoute";
 
@@ -25,6 +26,9 @@ class App extends Component {
 					<Switch>
 						<Route path="/login">
 							<LoginPage />
+						</Route>
+						<Route path="/register">
+							<RegisterPage />
 						</Route>
 						<PrivateRoute
 							exact
