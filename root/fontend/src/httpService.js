@@ -1,24 +1,32 @@
-import http from "./http";
+import axios from "./http";
 
 class RoomDataService {
 	postLogin(data) {
-		return http.post("/auth/login", data);
+		return axios.post("/auth/login", data);
 	}
 
 	postRegister(data) {
-		return http.post("/auth/register", data);
+		return axios.post("/auth/register", data);
 	}
 
 	postJoinRoom(data) {
-		return http.post("/auth/join", data);
+		return axios.post("/auth/join", data);
 	}
 
 	postCreateRoom(data) {
-		return http.post("/auth/create", data);
+		return axios.post("/auth/create", data);
+	}
+
+	isAuth() {
+		return axios.get("/auth/isAuth");
+	}
+
+	logout() {
+		return axios.get("/auth/logout");
 	}
 
 	getAll() {
-		return http.get("/get-all");
+		return axios.get("/get-all");
 	}
 }
 export default new RoomDataService();

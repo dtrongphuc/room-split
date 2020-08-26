@@ -6,25 +6,27 @@ export const authService = {
 	register,
 	joinRoom,
 	createRoom,
-	isUserLogged,
+	isAuth,
 };
 
 function login(username, password) {
-	DataService.postLogin({ username, password })
-		.then((res) => {
-			if (res) {
-				return Promise.resolve({ success: true });
-			}
-		})
-		.catch((err) => {
-			if (err && err.response) {
-				return Promise.reject(err.response.data);
-			}
-		});
+	return new Promise((resolve, reject) => {
+		DataService.postLogin({ username, password })
+			.then((res) => {
+				if (res) {
+					return resolve({ success: true });
+				}
+			})
+			.catch((err) => {
+				if (err && err.response) {
+					return reject(err.response.data);
+				}
+			});
+	});
 }
 
 function logout() {
-	// call api logout -> server
+	return DataService.logout();
 }
 
 function register(realname, username, password, passwordConfirm) {
@@ -64,11 +66,11 @@ function joinRoom(username, code) {
 	});
 }
 
-function createRoom(username, name, price, otherPrice) {
+function createRoom(username, roomName, price, otherPrice) {
 	return new Promise((resolve, reject) => {
 		DataService.postCreateRoom({
 			username,
-			name,
+			roomName,
 			price,
 			otherPrice,
 		})
@@ -86,4 +88,6 @@ function createRoom(username, name, price, otherPrice) {
 	});
 }
 
-function isUserLogged() {}
+function isAuth() {
+	return DataService.isAuth();
+}

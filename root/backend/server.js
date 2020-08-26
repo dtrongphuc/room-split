@@ -8,8 +8,8 @@ const mongoose = require("mongoose");
 const app = express();
 const port = process.env.PORT || 8080;
 
-const initAuthAPIs = require("./routes/api-Auth.route");
-const initMainAPIs = require("./routes/api-Main.route");
+const initAuthAPIs = require("./routes/api-auth.route");
+const initMainAPIs = require("./routes/api-main.route");
 
 mongoose
 	.connect(process.env.MONGO_URI, {

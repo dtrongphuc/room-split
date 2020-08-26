@@ -12,6 +12,12 @@ const refreshTokenSecret =
 	process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-@dtrongphuc";
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650days";
 
+let logout = (req, res) => {
+	res.clearCookie("accessToken");
+	res.clearCookie("refreshToken");
+	res.status(200).send({ success: true });
+};
+
 let login = async (req, res) => {
 	try {
 		var accessToken;
@@ -58,13 +64,11 @@ let login = async (req, res) => {
 
 						res.cookie("accessToken", accessToken, {
 							httpOnly: true,
-							signed: true,
 							maxAge: parseInt(process.env.COOKIE_LIFE),
 						});
 
 						res.cookie("refreshToken", refreshToken, {
 							httpOnly: true,
-							signed: true,
 							maxAge: 864000000 * 365,
 						});
 
@@ -100,17 +104,26 @@ let register = async (req, res) => {
 		let username = req.body.username;
 		let password = req.body.password;
 		let realName = req.body.realname;
+
 		await User.create({
 			username: username,
 			password: password,
 			realname: realName,
 		});
+
 		return res.status(200).send({
-			messeage: "Create user successful.",
+			success: true,
+			user: username,
+			error: {
+				messeage: "Create user successful.",
+			},
 		});
 	} catch (error) {
 		return res.status(403).send({
-			messeage: error || "Error while create new user.",
+			success: false,
+			error: {
+				messeage: error || "Error while create new user.",
+			},
 		});
 	}
 };
@@ -142,7 +155,7 @@ let joinRoom = (req, res) => {
 let createRoom = async (req, res) => {
 	try {
 		let username = req.body.username;
-		let roomName = req.body.roomname;
+		let roomName = req.body.roomName;
 		let price = req.body.price;
 		let memberCount = 1;
 		let otherPrice = req.body.otherPrice;
@@ -207,10 +220,16 @@ let refreshToken = async (req, res) => {
 	}
 };
 
+let isAuth = (req, res) => {
+	res.status(200).send({ success: true });
+};
+
 module.exports = {
 	login: login,
+	logout: logout,
 	register: register,
 	joinRoom: joinRoom,
 	createRoom: createRoom,
 	refreshToken: refreshToken,
+	isAuth: isAuth,
 };

@@ -1,32 +1,43 @@
 import React from "react";
 import { Navbar } from "react-bootstrap";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
+import { authService } from "../services/auth.service";
 import "./Header.css";
 
-export default class Header extends React.Component {
-	render() {
-		return (
-			<Router>
-				<Navbar className="header shadow-sm">
-					<Navbar.Brand
-						className="text text-dark"
-						style={{ cursor: "pointer" }}
-					>
-						<Link to="/" className="text text-decoration-none">
-							Trang chủ
-						</Link>
-					</Navbar.Brand>
-					<div className="current-user ml-auto">
-						<Link
-							to="/logout"
-							className="text text-decoration-none"
-						>
-							Đăng xuất
-						</Link>
-					</div>
-				</Navbar>
-			</Router>
-		);
-	}
+function Header() {
+	let history = useHistory();
+
+	const handleLogout = () => {
+		authService
+			.logout()
+			.then((res) => {
+				if (res.status === 200) {
+					history.push("/login");
+					window.location.reload();
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	return (
+		<Navbar className="header shadow-sm">
+			<Navbar.Brand className="text text-dark">
+				<a href="/" className="text text-decoration-none pointer">
+					Trang chủ
+				</a>
+			</Navbar.Brand>
+			<a
+				href="/logout"
+				className="pointer text text-decoration-none ml-auto"
+				onClick={handleLogout}
+			>
+				Đăng xuất
+			</a>
+		</Navbar>
+	);
 }
+
+export default Header;

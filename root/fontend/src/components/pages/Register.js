@@ -3,10 +3,10 @@ import { Form, Row, Col, Button, Alert } from "react-bootstrap";
 import { UserOutlined, LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { authService } from "../../services/auth.service";
 import "./Auth.css";
-//import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function Register() {
-	//let history = useHistory();
+	let history = useHistory();
 
 	const [realname, setRealname] = useState("");
 	const [username, setUsername] = useState("");
@@ -45,21 +45,27 @@ function Register() {
 		formGroup.classList.remove("focus-active");
 	};
 
-	const handleRegister = useCallback(() => {
-		authService
-			.register(realname, username, password, passwordConfirm)
-			.then((res) => {
-				console.log(res);
-				setSuccessful(true);
-				setMessage("");
-			})
-			.catch((err) => {
-				console.log(err);
-				setSuccessful(false);
-				setMessage((err && err.error["message"]) || "Có lỗi đã xảy ra");
-			});
-		//history.push("/");
-	}, [realname, username, password, passwordConfirm]);
+	const handleRegister = useCallback(
+		(e) => {
+			e.preventDefault();
+			authService
+				.register(realname, username, password, passwordConfirm)
+				.then((res) => {
+					console.log(res);
+					setSuccessful(true);
+					setMessage("");
+					history.push("/register/options", { user: username });
+				})
+				.catch((err) => {
+					console.log(err);
+					setSuccessful(false);
+					setMessage(
+						(err && err.error["message"]) || "Có lỗi đã xảy ra"
+					);
+				});
+		},
+		[realname, username, password, passwordConfirm, history]
+	);
 
 	return successful ? (
 		<h2>register...</h2>
@@ -68,7 +74,11 @@ function Register() {
 			<div className="bg"></div>
 			<div className="wrapper d-flex align-items-center justify-content-center flex-column">
 				<h2 className="auth-title text-center">Đăng ký</h2>
-				<Form className="auth-form d-flex align-items-center justify-content-center flex-column">
+				<Form
+					id="form-register"
+					onSubmit={handleRegister}
+					className="auth-form d-flex align-items-center justify-content-center flex-column"
+				>
 					{message ? <Alert variant="dark">{message}</Alert> : ""}
 					<Form.Group
 						as={Row}
@@ -166,12 +176,20 @@ function Register() {
 							/>
 						</Col>
 					</Form.Group>
-					<Button
-						className="text-center btn"
-						onClick={handleRegister}
-					>
-						Đăng ký
-					</Button>
+					<div className="d-flex align-items-center justify-content-around mt-4 mb-2 full-width">
+						<a href="/login" className="text text-decoration-none">
+							Đăng nhập
+						</a>
+
+						<Button
+							type="submit"
+							className="text-center btn"
+							form="form-register"
+							value="submit"
+						>
+							Đăng ký
+						</Button>
+					</div>
 				</Form>
 			</div>
 		</div>

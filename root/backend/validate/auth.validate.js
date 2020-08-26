@@ -53,7 +53,6 @@ exports.postRegister = (req, res, next) => {
 					},
 				});
 			} else {
-				console.log("next");
 				next();
 			}
 		});
@@ -88,7 +87,7 @@ exports.postJoinRoom = (req, res, next) => {
 
 exports.postCreateRoom = (req, res, next) => {
 	try {
-		let roomName = req.body.name;
+		let roomName = req.body.roomName;
 		let price = req.body.price;
 
 		if (isEmpty(roomName) || isEmpty(price.toString())) {

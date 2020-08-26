@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Card, Button, Form, Alert, Row, Col } from "react-bootstrap";
-//import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import {
 	TagOutlined,
 	DollarOutlined,
@@ -12,15 +12,21 @@ import { authService } from "../../services/auth.service";
 import "./Auth.css";
 
 const RegisterOption = () => {
-	//let history = useHistory();
+	let history = useHistory();
+	let location = useLocation();
+
+	const currentUser = (location.state && location.state.user) || null;
+	if (!currentUser) {
+		history.push("/login");
+	}
 
 	const [selected, setSelected] = useState(null);
 	const [successful, setSuccessful] = useState(false);
 	const [message, setMessage] = useState("");
 
-	const [name, setRoomName] = useState("");
-	const [price, setRoomPrice] = useState();
-	const [otherPrice, setRoomOtherPrice] = useState();
+	const [roomName, setRoomName] = useState("");
+	const [price, setRoomPrice] = useState("");
+	const [otherPrice, setRoomOtherPrice] = useState("");
 	const [code, setRoomCode] = useState("");
 
 	const onChangeRoomName = useCallback((e) => {
@@ -53,36 +59,43 @@ const RegisterOption = () => {
 		formGroup.classList.remove("focus-active");
 	};
 
-	const handleCreateRoom = useCallback(() => {
-		console.log("creating room...");
-		console.log(name, price, otherPrice);
-		authService
-			.createRoom("dtrongphucaaa", name, price, otherPrice)
-			.then((res) => {
-				console.log(res);
-				setSuccessful(true);
-			})
-			.catch((err) => {
-				console.log(err);
-				setMessage((err && err.error["message"]) || "Có lỗi đã xảy ra");
-			});
-		// history.push("/login");
-	}, [name, price, otherPrice]);
+	const handleCreateRoom = useCallback(
+		(e) => {
+			e.preventDefault();
+			authService
+				.createRoom(currentUser, roomName, price, otherPrice)
+				.then((res) => {
+					setSuccessful(true);
+					history.push("/");
+				})
+				.catch((err) => {
+					setSuccessful(false);
+					setMessage(
+						(err && err.error["message"]) || "Có lỗi đã xảy ra"
+					);
+				});
+		},
+		[currentUser, roomName, price, otherPrice, history]
+	);
 
-	const handleJoinRoom = useCallback(() => {
-		console.log("joining room...");
-		authService
-			.joinRoom("newuser", code)
-			.then((res) => {
-				console.log(res);
-				setSuccessful(true);
-				setMessage("");
-			})
-			.catch((err) => {
-				console.log(err);
-				setMessage((err && err.error["message"]) || "Có lỗi đã xảy ra");
-			});
-	}, [code]);
+	const handleJoinRoom = useCallback(
+		(e) => {
+			e.preventDefault();
+			authService
+				.joinRoom(currentUser, code)
+				.then((res) => {
+					setSuccessful(true);
+					setMessage("");
+					history.push("/");
+				})
+				.catch((err) => {
+					setMessage(
+						(err && err.error["message"]) || "Có lỗi đã xảy ra"
+					);
+				});
+		},
+		[currentUser, code, history]
+	);
 
 	const switchToCreateRoom = useCallback(() => {
 		setSelected("create");
@@ -108,7 +121,7 @@ const RegisterOption = () => {
 				) : (
 					<Card className="rounded-lg">
 						<Card.Header>
-							<h3>Xin chào...</h3>
+							<h3>Xin chào {currentUser}</h3>
 						</Card.Header>
 						<Card.Body className="p-md-5 p-sm-3">
 							<Button
@@ -134,7 +147,11 @@ const RegisterOption = () => {
 						<h2 className="auth-title text-center">
 							Thông tin phòng
 						</h2>
-						<Form className="auth-form d-flex align-items-center justify-content-center flex-column">
+						<Form
+							id="form-create"
+							onSubmit={handleCreateRoom}
+							className="auth-form d-flex align-items-center justify-content-center flex-column"
+						>
 							<CloseOutlined
 								as={Button}
 								onClick={switchToOptions}
@@ -150,7 +167,7 @@ const RegisterOption = () => {
 								noGutters={true}
 								controlId="formRoomName"
 								className="form-group-cs"
-								form-filter="name"
+								form-filter="roomName"
 							>
 								<span className="line" />
 								<Form.Label className="text-right form-label">
@@ -161,11 +178,11 @@ const RegisterOption = () => {
 										type="text"
 										placeholder="Tên phòng"
 										required
-										value={name}
+										value={roomName}
 										onChange={onChangeRoomName}
 										className="auth-input px-3"
-										onFocus={() => onInputFocus("name")}
-										onBlur={() => onFocusOut("name")}
+										onFocus={() => onInputFocus("roomName")}
+										onBlur={() => onFocusOut("roomName")}
 									/>
 								</Col>
 							</Form.Group>
@@ -224,8 +241,9 @@ const RegisterOption = () => {
 								</Col>
 							</Form.Group>
 							<Button
-								className="text-center btn"
-								onClick={handleCreateRoom}
+								type="submit"
+								form="form-create"
+								className="text-center btn mt-4 mb-2"
 							>
 								Tạo phòng
 							</Button>
@@ -237,7 +255,11 @@ const RegisterOption = () => {
 						<h2 className="auth-title text-center">
 							Tham gia phòng
 						</h2>
-						<Form className="auth-form d-flex align-items-center justify-content-center flex-column">
+						<Form
+							id="form-join"
+							onSubmit={handleJoinRoom}
+							className="auth-form d-flex align-items-center justify-content-center flex-column"
+						>
 							<CloseOutlined
 								as={Button}
 								onClick={switchToOptions}
@@ -273,8 +295,9 @@ const RegisterOption = () => {
 								</Col>
 							</Form.Group>
 							<Button
-								className="text-center btn"
-								onClick={handleJoinRoom}
+								form="form-join"
+								type="submit"
+								className="text-center btn mt-4 mb-2"
 							>
 								Tham gia
 							</Button>

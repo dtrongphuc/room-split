@@ -1,4 +1,8 @@
 .header {
-  height: 60px;
-  background-color: #fff;
+	height: 60px;
+	background-color: #fff;
+}
+
+.pointer {
+	cursor: pointer;
 }

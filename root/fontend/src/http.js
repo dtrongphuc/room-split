@@ -13,4 +13,5 @@ export default axios.create({
 	},
 	withCredentials: true,
 	crossDomain: true,
+	timeout: 10000,
 });

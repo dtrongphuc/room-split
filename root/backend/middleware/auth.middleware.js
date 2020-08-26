@@ -9,12 +9,14 @@ exports.isAuth = async (req, res, next) => {
 		req.body.token ||
 		req.query.token ||
 		req.headers["x-access-token"];
-	console.log(tokenFromClient);
-	if (tokenFromClient) {
+
+	const accessTokenFromClient =
+		tokenFromClient && tokenFromClient.split(/[\=\;]/)[1];
+	if (tokenFromClient && accessTokenFromClient) {
 		try {
 			// Giải mã xem token có hợp lệ không ?
 			const decoded = await jwtHelper.verifyToken(
-				tokenFromClient,
+				accessTokenFromClient,
 				accessTokenSecret
 			);
 			// Lưu thông tin giải mã được vào đối tượng req
@@ -22,13 +24,19 @@ exports.isAuth = async (req, res, next) => {
 			next();
 		} catch (error) {
 			return res.status(401).send({
-				message: "Unauthorized.",
+				success: false,
+				error: {
+					message: "Unauthorized.",
+				},
 			});
 		}
 	} else {
 		// Không tồn tại token trong request
 		return res.status(403).send({
-			message: "No token provided.",
+			success: false,
+			error: {
+				message: "No token provided.",
+			},
 		});
 	}
 };
