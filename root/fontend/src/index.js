@@ -6,6 +6,8 @@ import App from "./components/App";
 // import HomePage from "./components/pages/HomePage";
 
 import "./index.css";
+import "./style/override.css";
+import "./style/common.css";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(<App />, document.getElementById("root"));

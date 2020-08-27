@@ -1,0 +1,30 @@
+.sidebar {
+	position: sticky;
+	top: var(--header-height);
+	color: var(--sidebar-text-color);
+	background-color: var(--main-bg-color);
+	height: 100%;
+	padding: 20px 4px 20px 32px;
+}
+
+.sidebar-list {
+	line-height: 2rem;
+}
+
+.special-title {
+	font-family: "Exo", sans-serif;
+	font-size: 1.4rem;
+	line-height: 1;
+}
+
+.sidebar-icon {
+	margin-right: 8px;
+	color: var(--sidebar-icon-color);
+	font-size: 16px;
+}
+
+.sidebar-text {
+	font-size: 0.9rem;
+	line-height: 1rem;
+	font-weight: 200;
+}

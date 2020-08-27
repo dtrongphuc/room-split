@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import LoginPage from "./pages/Login";
-import RegisterPage from "./pages/Register";
-import RegisterOption from "./pages/RegisterOption";
-import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/Authentication/Login";
+import RegisterPage from "./pages/Authentication/Register";
+import RegisterOption from "./pages/Authentication/RegisterOption";
+import HomePage from "./pages/Home/HomePage";
 import PrivateRoute from "./PrivateRoute";
 
 // import "antd/dist/antd.css";

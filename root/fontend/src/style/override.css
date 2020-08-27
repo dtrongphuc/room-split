@@ -1,0 +1,36 @@
+.form-group {
+	margin-bottom: 0;
+}
+
+.form-control:focus {
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+	box-shadow: 0 0 0 1000px #fff inset !important;
+	/*use inset box-shadow to cover background-color*/
+	-webkit-text-fill-color: #555555 !important;
+	/*use text fill color to cover font color*/
+}
+
+.container-fluid {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.container-fluid,
+.row {
+	height: 100%;
+}
+
+.anticon {
+	line-height: 1.6rem;
+}
+
+.btn.focus {
+	box-shadow: none;
+}

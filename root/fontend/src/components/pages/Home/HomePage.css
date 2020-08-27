@@ -1,0 +1,14 @@
+.home {
+	background-color: var(--main-bg-color);
+	height: 100%;
+}
+
+.home-main {
+	position: relative;
+	height: 100%;
+	padding-top: var(--header-height);
+}
+
+.main-right {
+	padding: 0 32px !important;
+}
