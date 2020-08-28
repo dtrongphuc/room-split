@@ -1,0 +1,14 @@
+.loader-wrapper {
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 40px;
+	left: 50%;
+	right: 50%;
+	background-color: #fff;
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}

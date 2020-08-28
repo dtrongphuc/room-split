@@ -28,5 +28,9 @@ class RoomDataService {
 	getAll() {
 		return axios.get("/get-all");
 	}
+
+	postPurchase(data) {
+		return axios.post("/add/purchase", data);
+	}
 }
 export default new RoomDataService();

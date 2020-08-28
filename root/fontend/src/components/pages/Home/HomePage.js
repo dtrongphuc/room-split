@@ -38,7 +38,7 @@ function HomePage() {
 
 	return (
 		<>
-			<Header name={currentUser.realname} />
+			<Header name={currentUser.realname} userID={currentUser._id} />
 			<main className="home-main">
 				<Container fluid>
 					<Row noGutters="true">

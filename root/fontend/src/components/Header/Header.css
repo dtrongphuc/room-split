@@ -35,6 +35,15 @@
 	outline: none;
 }
 
+.btn-rounded:active,
+.btn-rounded:not(:disabled):not(.disabled):active,
+.btn-rounded:focus {
+	box-shadow: none;
+	border: 0 !important;
+	outline: 0 !important;
+	color: transparent;
+}
+
 .btn-rounded.focus > .header-icon {
 	color: #0572ef;
 	border: none;

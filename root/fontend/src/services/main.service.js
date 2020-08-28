@@ -15,6 +15,22 @@ const getAll = () => {
 	});
 };
 
+const postPurchase = (data) => {
+	return new Promise((resolve, reject) => {
+		DataService.postPurchase(data)
+			.then((res) => {
+				if (res) {
+					resolve(res.status);
+				}
+			})
+			.catch((err) => {
+				reject(err);
+			})
+			.catch((err) => {});
+	});
+};
+
 export const mainService = {
 	getAll,
+	postPurchase,
 };
