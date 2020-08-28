@@ -15,7 +15,7 @@ import "./Header.css";
 function Header({ name }) {
 	let history = useHistory();
 
-	const [modalShow, setModalShow] = useState(true);
+	const [modalShow, setModalShow] = useState(false);
 
 	const handleLogout = () => {
 		authService

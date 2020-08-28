@@ -93,7 +93,7 @@ const Login = () => {
 								required
 								value={username}
 								onChange={onChangeUsername}
-								className="auth-input px-3"
+								className="auth-input no-outline px-3"
 								onFocus={() => onInputFocus("username")}
 								onBlur={() => onFocusOut("username")}
 							/>
@@ -118,7 +118,7 @@ const Login = () => {
 								required
 								onChange={onChangePassword}
 								placeholder="Mật khẩu"
-								className="auth-input px-3"
+								className="auth-input no-outline px-3"
 								onFocus={() => onInputFocus("password")}
 								onBlur={() => onFocusOut("password")}
 							/>

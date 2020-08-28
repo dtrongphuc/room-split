@@ -99,7 +99,7 @@ function Register() {
 								required
 								value={realname}
 								onChange={onChangeRealName}
-								className="auth-input px-3"
+								className="auth-input no-outline px-3"
 								onFocus={() => onInputFocus("realname")}
 								onBlur={() => onFocusOut("realname")}
 							/>
@@ -123,7 +123,7 @@ function Register() {
 								required
 								value={username}
 								onChange={onChangeUsername}
-								className="auth-input px-3"
+								className="auth-input no-outline px-3"
 								onFocus={() => onInputFocus("username")}
 								onBlur={() => onFocusOut("username")}
 							/>
@@ -147,7 +147,7 @@ function Register() {
 								required
 								onChange={onChangePassword}
 								placeholder="Mật khẩu"
-								className="auth-input px-3"
+								className="auth-input no-outline px-3"
 								onFocus={() => onInputFocus("passwordConfirm")}
 								onBlur={() => onFocusOut("passwordConfirm")}
 							/>
@@ -171,7 +171,7 @@ function Register() {
 								required
 								onChange={onChangePasswordConfirm}
 								placeholder="Nhập lại mật khẩu"
-								className="auth-input px-3"
+								className="auth-input no-outline px-3"
 								onFocus={() => onInputFocus("password")}
 								onBlur={() => onFocusOut("password")}
 							/>

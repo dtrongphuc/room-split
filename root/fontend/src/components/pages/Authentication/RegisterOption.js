@@ -180,7 +180,7 @@ const RegisterOption = () => {
 										required
 										value={roomName}
 										onChange={onChangeRoomName}
-										className="auth-input px-3"
+										className="auth-input no-outline px-3"
 										onFocus={() => onInputFocus("roomName")}
 										onBlur={() => onFocusOut("roomName")}
 									/>
@@ -205,7 +205,7 @@ const RegisterOption = () => {
 										required
 										value={price}
 										onChange={onChangeRoomPrice}
-										className="auth-input px-3"
+										className="auth-input no-outline px-3"
 										onFocus={() =>
 											onInputFocus("roomPrice")
 										}
@@ -232,7 +232,7 @@ const RegisterOption = () => {
 										required
 										value={otherPrice}
 										onChange={onChangeRoomOtherPrice}
-										className="auth-input px-3"
+										className="auth-input no-outline px-3"
 										onFocus={() =>
 											onInputFocus("otherPrice")
 										}
@@ -288,7 +288,7 @@ const RegisterOption = () => {
 										required
 										value={code}
 										onChange={onChangeRoomCode}
-										className="auth-input px-3"
+										className="auth-input no-outline px-3"
 										onFocus={() => onInputFocus("roomCode")}
 										onBlur={() => onFocusOut("roomCode")}
 									/>

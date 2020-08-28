@@ -13,6 +13,12 @@
 	outline: none;
 }
 
+.no-outline:focus {
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+
 .btn:active,
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn:focus {
