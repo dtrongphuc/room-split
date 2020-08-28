@@ -14,7 +14,7 @@ export default function SideBar({ room }) {
 			<ul className="sidebar-list">
 				<li className="d-flex align-items-center my-2">
 					<HomeRounded className="sidebar-icon" />
-					<p className="special-title">{room.name}</p>
+					<p className="special-title text-capitalize">{room.name}</p>
 				</li>
 				<li className="d-flex align-items-center my-2">
 					<VpnKeyRounded className="sidebar-icon" />

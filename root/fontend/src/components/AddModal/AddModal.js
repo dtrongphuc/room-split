@@ -124,18 +124,17 @@ function AddModal({ userID, ...props }) {
 							</Form.Group>
 						</Col>
 					</Form.Row>
-					<Button
-						variant="primary"
-						type="submit"
-						className="mt-3 mb-2"
-					>
-						Submit
-					</Button>
+					<div className="text-right">
+						<Button
+							variant="primary"
+							type="submit"
+							className="mt-3 mb-2"
+						>
+							Thêm
+						</Button>
+					</div>
 				</Form>
 			</Modal.Body>
-			<Modal.Footer>
-				<Button onClick={props.onHide}>Close</Button>
-			</Modal.Footer>
 		</Modal>
 	);
 }

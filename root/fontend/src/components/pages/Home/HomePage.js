@@ -42,10 +42,10 @@ function HomePage() {
 			<main className="home-main">
 				<Container fluid>
 					<Row noGutters="true">
-						<Col sm={2} className="main-left">
+						<Col md={3} className="main-left">
 							<SideBar room={room} />
 						</Col>
-						<Col sm={10} className="main-right">
+						<Col md={9} className="main-right">
 							<Accordion user={currentUser} />
 						</Col>
 					</Row>
