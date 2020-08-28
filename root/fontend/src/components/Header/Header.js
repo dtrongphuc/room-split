@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import {
@@ -7,11 +7,16 @@ import {
 	ArrowDropDownRounded,
 } from "@material-ui/icons";
 
+import AddModal from "../AddModal/AddModal";
+
 import { authService } from "../../services/auth.service";
 import "./Header.css";
 
 function Header({ name }) {
 	let history = useHistory();
+
+	const [modalShow, setModalShow] = useState(true);
+
 	const handleLogout = () => {
 		authService
 			.logout()
@@ -51,7 +56,7 @@ function Header({ name }) {
 	};
 
 	return (
-		<div className="header">
+		<header className="header">
 			<Navbar className="nav">
 				<Navbar.Brand className="text text-dark">
 					<a href="/" className="text text-decoration-none pointer">
@@ -61,7 +66,11 @@ function Header({ name }) {
 				<div className="ml-auto d-flex align-items-center">
 					<ul className="d-flex align-items-center">
 						<li className="mx-1">
-							<button className="btn btn-rounded dropdown-btn">
+							<button
+								className="btn btn-rounded"
+								title="Thêm sản phẩm"
+								onClick={() => setModalShow(true)}
+							>
 								<AddRounded className="header-icon" />
 							</button>
 						</li>
@@ -98,7 +107,8 @@ function Header({ name }) {
 					</ul>
 				</div>
 			</Navbar>
-		</div>
+			<AddModal show={modalShow} onHide={() => setModalShow(false)} />
+		</header>
 	);
 }
 

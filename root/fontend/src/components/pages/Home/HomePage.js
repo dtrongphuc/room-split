@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Header from "../../Header/Header";
 import Accordion from "../../Accordion/Accordion";
 import SideBar from "../../SideBar/SideBar";
+
 import { mainService } from "../../../services/main.service";
 import "./HomePage.css";
 
@@ -36,7 +37,7 @@ function HomePage() {
 	}, []);
 
 	return (
-		<div className="home">
+		<>
 			<Header name={currentUser.realname} />
 			<main className="home-main">
 				<Container fluid>
@@ -50,7 +51,7 @@ function HomePage() {
 					</Row>
 				</Container>
 			</main>
-		</div>
+		</>
 	);
 }
 

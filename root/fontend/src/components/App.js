@@ -13,7 +13,7 @@ import "./App.css";
 function App() {
 	return (
 		<Router>
-			<div className="App">
+			<>
 				<Switch>
 					<Route exact path="/login">
 						<LoginPage />
@@ -26,7 +26,7 @@ function App() {
 					</Route>
 					<PrivateRoute exact path="/" component={HomePage} />
 				</Switch>
-			</div>
+			</>
 		</Router>
 	);
 }

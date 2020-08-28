@@ -1,12 +1,8 @@
-.home {
-	background-color: var(--main-bg-color);
-	height: 100%;
-}
-
 .home-main {
 	position: relative;
 	height: 100%;
 	padding-top: var(--header-height);
+	background-color: var(--main-bg-color);
 }
 
 .main-right {
