@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
-import Loader from "../../Loader/Loader";
+import Header from "../../Header/Header";
+import Accordion from "../../Accordion/Accordion";
+import SideBar from "../../SideBar/SideBar";
+
 import { mainService } from "../../../services/main.service";
 import "./HomePage.css";
-
-const Header = React.lazy(() => import("../../Header/Header"));
-const Accordion = React.lazy(() => import("../../Accordion/Accordion"));
-const SideBar = React.lazy(() => import("../../SideBar/SideBar"));
 
 function HomePage() {
 	// state
@@ -38,7 +37,7 @@ function HomePage() {
 	}, []);
 
 	return (
-		<React.Suspense fallback={<Loader loading={true} />}>
+		<>
 			<Header name={currentUser.realname} userID={currentUser._id} />
 			<main className="home-main">
 				<Container fluid>
@@ -52,7 +51,7 @@ function HomePage() {
 					</Row>
 				</Container>
 			</main>
-		</React.Suspense>
+		</>
 	);
 }
 
