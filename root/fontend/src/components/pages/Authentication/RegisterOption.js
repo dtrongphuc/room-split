@@ -170,7 +170,7 @@ const RegisterOption = () => {
 								form-filter="roomName"
 							>
 								<span className="line" />
-								<Form.Label className="text-right form-label">
+								<Form.Label className="text-right form-label form-label__auth">
 									<TagOutlined className="auth-icon" />
 								</Form.Label>
 								<Col sm="10">
@@ -194,7 +194,7 @@ const RegisterOption = () => {
 								form-filter="roomPrice"
 							>
 								<span className="line" />
-								<Form.Label className="text-right form-label">
+								<Form.Label className="text-right form-label form-label__auth">
 									<DollarOutlined className="auth-icon" />
 								</Form.Label>
 								<Col sm="10">
@@ -221,7 +221,7 @@ const RegisterOption = () => {
 								form-filter="otherPrice"
 							>
 								<span className="line" />
-								<Form.Label className="text-right form-label">
+								<Form.Label className="text-right form-label form-label__auth">
 									<DollarOutlined className="auth-icon" />
 								</Form.Label>
 								<Col sm="10">
@@ -278,7 +278,7 @@ const RegisterOption = () => {
 								form-filter="roomCode"
 							>
 								<span className="line" />
-								<Form.Label className="text-right form-label">
+								<Form.Label className="text-right form-label form-label__auth">
 									<KeyOutlined className="auth-icon" />
 								</Form.Label>
 								<Col sm="10">

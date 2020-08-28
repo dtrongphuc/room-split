@@ -109,15 +109,15 @@
 	width: 100%;
 }
 
-.form-label {
+.form-label__auth {
 	width: 60px;
 	transition: all ease-in-out 0.4s;
 }
 
-.focus-active > .form-label {
+.focus-active > .form-label__auth {
 	width: 40px;
 }
 
-.focus-active > .form-label > .auth-icon {
+.focus-active > .form-label__auth > .auth-icon {
 	color: #d5577f;
 }

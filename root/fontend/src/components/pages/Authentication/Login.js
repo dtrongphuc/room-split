@@ -83,7 +83,7 @@ const Login = () => {
 						form-filter="username"
 					>
 						<span className="line" />
-						<Form.Label className="text-right form-label">
+						<Form.Label className="text-right form-label form-label__auth">
 							<UserOutlined className="auth-icon" />
 						</Form.Label>
 						<Col sm="10">
@@ -108,7 +108,7 @@ const Login = () => {
 						form-filter="password"
 					>
 						<span className="line" />
-						<Form.Label className="text-right form-label">
+						<Form.Label className="text-right form-label form-label__auth">
 							<LockOutlined className="auth-icon" />
 						</Form.Label>
 						<Col sm="10">
