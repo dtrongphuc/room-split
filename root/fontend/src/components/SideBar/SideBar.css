@@ -3,7 +3,6 @@
 	top: var(--header-height);
 	color: var(--sidebar-text-color);
 	background-color: var(--main-bg-color);
-	height: 100%;
 	padding: 20px 4px 20px 32px;
 }
 

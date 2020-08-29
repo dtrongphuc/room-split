@@ -32,6 +32,22 @@ export default function SideBar({ room }) {
 					<AttachMoneyRounded className="sidebar-icon" />
 					<p className="sidebar-text">Tiền khác: {room.otherPrice}</p>
 				</li>
+				<li className="d-flex align-items-center my-2">
+					<label form="month" className="mb-0 mr-2">
+						Tháng:
+					</label>
+					<select name="month" id="month">
+						<option value="8">Tháng 8</option>
+					</select>
+				</li>
+				<li className="d-flex align-items-center my-2">
+					<label form="year" className="mb-0 mr-2">
+						Năm:
+					</label>
+					<select name="year" id="year">
+						<option value="2020">2020</option>
+					</select>
+				</li>
 			</ul>
 		</div>
 	);

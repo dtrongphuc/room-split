@@ -8,6 +8,7 @@ var purchaseSchema = new Schema(
 		productName: String,
 		price: Number,
 		quantity: Number,
+		totalPrice: Number,
 	},
 	{ versionKey: false }
 );

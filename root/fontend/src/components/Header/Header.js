@@ -12,7 +12,7 @@ import AddModal from "../AddModal/AddModal";
 import { authService } from "../../services/auth.service";
 import "./Header.css";
 
-function Header({ userID, name }) {
+function Header({ userID, name, onAddProduct }) {
 	let history = useHistory();
 
 	const [modalShow, setModalShow] = useState(false);
@@ -111,6 +111,7 @@ function Header({ userID, name }) {
 				show={modalShow}
 				onHide={() => setModalShow(false)}
 				userID={userID}
+				onAddProduct={onAddProduct}
 			/>
 		</header>
 	);

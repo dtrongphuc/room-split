@@ -25,8 +25,10 @@ class RoomDataService {
 		return axios.get("/auth/logout");
 	}
 
-	getAll() {
-		return axios.get("/get-all");
+	getAll(params) {
+		return axios.get("/get/all", {
+			params: params,
+		});
 	}
 
 	postPurchase(data) {

@@ -1,8 +1,8 @@
 import DataService from "../httpService";
 
-const getAll = () => {
+const getAll = (data) => {
 	return new Promise((resolve, reject) => {
-		DataService.getAll()
+		DataService.getAll(data)
 			.then((res) => {
 				if (res) {
 					resolve(res.data);
@@ -15,9 +15,9 @@ const getAll = () => {
 	});
 };
 
-const postPurchase = (data) => {
+const postPurchase = (params) => {
 	return new Promise((resolve, reject) => {
-		DataService.postPurchase(data)
+		DataService.postPurchase(params)
 			.then((res) => {
 				if (res) {
 					resolve(res.status);

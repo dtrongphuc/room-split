@@ -2,21 +2,6 @@ const User = require("../models/user.model");
 const Room = require("../models/room.model");
 const Purchase = require("../models/purchase.model");
 
-let getAll = async (req, res) => {
-	const { data } = req.jwtDecoded;
-	try {
-		const user = await User.findById(data._id);
-		const room = await Room.findById(data.room);
-
-		res.status(200).json({
-			user: user,
-			room: room,
-		});
-	} catch (err) {
-		res.status(404).json(err);
-	}
-};
-
 let postPurchase = (req, res) => {
 	const {
 		userID,
@@ -42,6 +27,7 @@ let postPurchase = (req, res) => {
 				productName: productName,
 				price: productPrice,
 				quantity: productQuantity,
+				totalPrice: productPrice * productQuantity,
 			});
 		});
 
@@ -53,7 +39,88 @@ let postPurchase = (req, res) => {
 	}
 };
 
+let getHistory = async (userID, month, year) => {
+	let user = await User.findById(userID);
+	let data = await Purchase.aggregate([
+		{
+			$addFields: {
+				month: { $month: "$date" },
+				year: { $year: "$date" },
+			},
+		},
+		{
+			$match: {
+				month: month,
+				year: year,
+				user: user._id,
+			},
+		},
+		{
+			$project: {
+				productName: 1,
+				price: 1,
+				quantity: 1,
+				date: 1,
+				totalPrice: 1,
+				_id: 0,
+			},
+		},
+	]);
+
+	return data;
+};
+
+let getAll = async (req, res) => {
+	try {
+		const { data } = req.jwtDecoded;
+		const { month, year } = req.query;
+
+		const currentUser = await User.findById(data._id);
+		const users = await User.find({
+			room: data.room,
+			_id: { $ne: currentUser._id },
+		});
+		const room = await Room.findById(data.room);
+
+		let currentHistory = await getHistory(
+			currentUser._id,
+			parseInt(month),
+			parseInt(year)
+		);
+
+		let currentUserData = {
+			_id: currentUser._id,
+			realname: currentUser.realname,
+			purchase: currentHistory,
+		};
+
+		let membersData = await Promise.all(
+			[...users].map(async (user) => {
+				let history = await getHistory(
+					user._id,
+					parseInt(month),
+					parseInt(year)
+				);
+				return {
+					_id: user._id,
+					realname: user.realname,
+					purchase: history,
+				};
+			})
+		);
+
+		res.status(200).json({
+			currentUser: currentUserData,
+			membersData: [currentUserData].concat(membersData),
+			room: room,
+		});
+	} catch (err) {
+		res.status(500).json(err);
+	}
+};
+
 module.exports = {
 	getAll: getAll,
 	postPurchase: postPurchase,
+	getHistory: getHistory,
 };

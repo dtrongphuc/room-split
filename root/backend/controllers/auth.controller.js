@@ -139,6 +139,19 @@ let joinRoom = (req, res) => {
 					messeage: "Room code is not exist.",
 				});
 			}
+
+			await Room.findByIdAndUpdate(
+				room._id,
+				{
+					$set: {
+						memberCount: room.memberCount + 1,
+					},
+				},
+				{
+					useFindAndModify: false,
+				}
+			);
+
 			await User.findOneAndUpdate(
 				{ username: username },
 				{ room: room._id },

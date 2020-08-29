@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 import Header from "../../Header/Header";
@@ -11,42 +11,49 @@ import "./HomePage.css";
 function HomePage() {
 	// state
 	const [currentUser, setCurrentUser] = useState("");
+	const [membersData, setMembersData] = useState([]);
 	const [room, setRoom] = useState("");
+	const [month] = useState(8);
+	const [year] = useState(2020);
+
+	const getData = useCallback(async () => {
+		try {
+			const response = await mainService.getAll({
+				month: month,
+				year: year,
+			});
+			if (response) {
+				setCurrentUser(response.currentUser);
+				setMembersData(response.membersData);
+				setRoom(response.room);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	}, [month, year]);
 
 	useEffect(() => {
-		let didCancel = false;
-
-		const getData = async () => {
-			try {
-				const response = await mainService.getAll();
-				if (!didCancel) {
-					setCurrentUser(response.user);
-					setRoom(response.room);
-				}
-			} catch (err) {
-				didCancel = true;
-				console.log(err);
-			}
-		};
-
+		console.log("start effect");
 		getData();
-		return () => {
-			didCancel = true;
-			console.log("canceling...");
-		};
-	}, []);
+	}, [getData]);
+
+	//handleChangeMonth = () => {};
 
 	return (
 		<>
-			<Header name={currentUser.realname} userID={currentUser._id} />
+			<Header
+				name={currentUser.realname}
+				userID={currentUser._id}
+				onAddProduct={getData}
+			/>
 			<main className="home-main">
 				<Container fluid>
 					<Row noGutters="true">
 						<Col md={3} className="main-left">
-							<SideBar room={room} />
+							<SideBar room={room} month={month} year={year} />
 						</Col>
 						<Col md={9} className="main-right">
-							<Accordion user={currentUser} />
+							<Accordion members={membersData} />
 						</Col>
 					</Row>
 				</Container>

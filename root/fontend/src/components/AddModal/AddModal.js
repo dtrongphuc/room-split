@@ -5,7 +5,7 @@ import moment from "moment";
 import { mainService } from "../../services/main.service";
 import Loader from "../Loader/Loader";
 
-function AddModal({ userID, ...props }) {
+function AddModal({ userID, onAddProduct, ...props }) {
 	const [current, setCurrent] = useState("");
 	const [end, setEnd] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -44,6 +44,7 @@ function AddModal({ userID, ...props }) {
 					if (res && res === 200) {
 						setLoading(false);
 						props.onHide();
+						onAddProduct();
 					}
 				})
 				.catch((err) => {

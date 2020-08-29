@@ -7,12 +7,13 @@ const authMiddleware = require("../middleware/auth.middleware");
 
 let initAPIs = (app) => {
 	Router.use(authMiddleware.isAuth);
-	Router.get("/get-all", mainController.getAll);
+	Router.get("/get/all?:month?:year", mainController.getAll);
 	Router.post(
 		"/add/purchase",
 		mainValidate.postPurchase,
 		mainController.postPurchase
 	);
+	Router.get("/get-purchase", mainController.getHistory);
 	return app.use("/api", Router);
 };
 
