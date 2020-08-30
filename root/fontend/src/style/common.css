@@ -1,8 +1,12 @@
 :root {
-	--main-bg-color: #f0f2f5;
+	--body-bg-color: #f0f2f5;
 	--header-height: 60px;
 	--sidebar-text-color: rgb(58, 58, 58);
 	--sidebar-icon-color: rgb(87, 87, 87);
+}
+
+body {
+	background-color: var(--body-bg-color) !important;
 }
 
 .pointer {

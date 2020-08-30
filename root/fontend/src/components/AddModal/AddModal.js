@@ -1,37 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Modal, Form, Col, Button, Alert } from "react-bootstrap";
 import moment from "moment";
+import { DatePicker, Space } from "antd";
 
+import { HomeContext } from "../../context/HomeContext";
 import { mainService } from "../../services/main.service";
 import Loader from "../Loader/Loader";
 
-function AddModal({ userID, onAddProduct, ...props }) {
-	const [current, setCurrent] = useState("");
-	const [end, setEnd] = useState("");
+function AddModal({ ...props }) {
+	const { currentUser, getData } = useContext(HomeContext);
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState("");
-
-	useEffect(() => {
-		let currentDate = moment().format("YYYY-MM-DD");
-		let endDate = moment().endOf("month").format("YYYY-MM-DD");
-		setCurrent(currentDate);
-		setEnd(endDate);
-	}, []);
-
-	const handleChangeDate = (e) => {
-		if (e.target.value) {
-			setCurrent(e.target.value);
-		}
-	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setLoading(true);
 		try {
 			const formData = new FormData(e.target);
-
 			const data = {
-				userID: userID,
+				userID: currentUser._id,
 				productName: formData.get("productName"),
 				productPrice: formData.get("productPrice"),
 				productQuantity: formData.get("productQuantity"),
@@ -44,7 +31,7 @@ function AddModal({ userID, onAddProduct, ...props }) {
 					if (res && res === 200) {
 						setLoading(false);
 						props.onHide();
-						onAddProduct();
+						getData();
 					}
 				})
 				.catch((err) => {
@@ -107,21 +94,19 @@ function AddModal({ userID, onAddProduct, ...props }) {
 								/>
 							</Form.Group>
 						</Col>
-
 						<Col>
 							<Form.Group
 								className="mb-3"
 								controlId="formProductDate"
 							>
 								<Form.Label>Ngày mua</Form.Label>
-								<Form.Control
-									type="date"
-									required
-									defaultValue={current}
-									onChange={handleChangeDate}
-									max={end}
-									name="productDate"
-								/>
+								<Space direction="vertical" size={12}>
+									<DatePicker
+										picker="date"
+										defaultValue={moment()}
+										name="productDate"
+									/>
+								</Space>
 							</Form.Group>
 						</Col>
 					</Form.Row>

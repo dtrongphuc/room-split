@@ -11,6 +11,7 @@ export default function History({ purchase }) {
 					<th>Sản phẩm</th>
 					<th>Thời gian</th>
 					<th>Giá</th>
+					<th>Số lượng</th>
 					<th>Tổng tiền</th>
 				</tr>
 			</thead>
@@ -22,6 +23,7 @@ export default function History({ purchase }) {
 							<td>{item.productName}</td>
 							<td>{moment(item.date).format("DD-MM-YYYY")}</td>
 							<td>{item.price}</td>
+							<td>{item.quantity}</td>
 							<td>{item.totalPrice}</td>
 						</tr>
 					))}

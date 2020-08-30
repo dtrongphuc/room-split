@@ -24,6 +24,14 @@ select:-webkit-autofill {
 	box-shadow: none;
 }
 
+.ant-picker-month-panel {
+	width: 240px !important;
+}
+
+.ant-picker-month-panel .ant-picker-content {
+	height: 200px !important;
+}
+
 @media (min-width: 576px) {
 	.modal-dialog {
 		max-width: 600px;

@@ -1,7 +1,6 @@
 .home-main {
 	position: relative;
 	padding-top: var(--header-height);
-	background-color: var(--main-bg-color);
 }
 
 .main-right {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Navbar } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import {
@@ -8,11 +8,14 @@ import {
 } from "@material-ui/icons";
 
 import AddModal from "../AddModal/AddModal";
+import { HomeContext } from "../../context/HomeContext";
 
 import { authService } from "../../services/auth.service";
 import "./Header.css";
 
-function Header({ userID, name, onAddProduct }) {
+const Header = () => {
+	const { currentUser } = useContext(HomeContext);
+
 	let history = useHistory();
 
 	const [modalShow, setModalShow] = useState(false);
@@ -88,7 +91,7 @@ function Header({ userID, name, onAddProduct }) {
 											<div className="avatar"></div>
 										</div>
 										<p className="text-capitalize dropdown-item-text">
-											{name}
+											{currentUser.realname}
 										</p>
 									</li>
 									<span className="dropdown-line"></span>
@@ -107,14 +110,9 @@ function Header({ userID, name, onAddProduct }) {
 					</ul>
 				</div>
 			</Navbar>
-			<AddModal
-				show={modalShow}
-				onHide={() => setModalShow(false)}
-				userID={userID}
-				onAddProduct={onAddProduct}
-			/>
+			<AddModal show={modalShow} onHide={() => setModalShow(false)} />
 		</header>
 	);
-}
+};
 
 export default Header;
