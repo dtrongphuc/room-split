@@ -54,7 +54,7 @@ export default function SideBar() {
 						<DatePicker
 							locale={locale}
 							picker="month"
-							defaultValue={moment("08-2020", "MM-YYYY")}
+							defaultValue={moment()}
 							onChange={onChangeDate}
 							format="MM-YYYY"
 						/>

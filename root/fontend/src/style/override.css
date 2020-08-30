@@ -16,6 +16,10 @@ select:-webkit-autofill {
 	padding-right: 0;
 }
 
+.table {
+	min-width: 450px;
+}
+
 .anticon {
 	line-height: 1.6rem;
 }

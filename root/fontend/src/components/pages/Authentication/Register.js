@@ -92,7 +92,7 @@ function Register() {
 						<Form.Label className="text-right form-label form-label__auth">
 							<SmileOutlined className="auth-icon" />
 						</Form.Label>
-						<Col sm="10">
+						<Col xs="10">
 							<Form.Control
 								type="text"
 								placeholder="Họ tên"
@@ -116,7 +116,7 @@ function Register() {
 						<Form.Label className="text-right form-label form-label__auth">
 							<UserOutlined className="auth-icon" />
 						</Form.Label>
-						<Col sm="10">
+						<Col xs="10">
 							<Form.Control
 								type="text"
 								placeholder="Tài khoản"
@@ -140,7 +140,7 @@ function Register() {
 						<Form.Label className="text-right form-label form-label__auth">
 							<LockOutlined className="auth-icon" />
 						</Form.Label>
-						<Col sm="10">
+						<Col xs="10">
 							<Form.Control
 								type="password"
 								value={password}
@@ -164,7 +164,7 @@ function Register() {
 						<Form.Label className="text-right form-label form-label__auth">
 							<LockOutlined className="auth-icon" />
 						</Form.Label>
-						<Col sm="10">
+						<Col xs="10">
 							<Form.Control
 								type="password"
 								value={passwordConfirm}
@@ -177,19 +177,26 @@ function Register() {
 							/>
 						</Col>
 					</Form.Group>
-					<div className="d-flex align-items-center justify-content-around mt-4 mb-2 full-width">
-						<a href="/login" className="text text-decoration-none">
-							Đăng nhập
-						</a>
+					<div className="d-flex align-items-center justify-content-around mt-4 full-width row no-gutters">
+						<Col md={6} xs={12} className="text-center">
+							<a
+								href="/login"
+								className="text text-decoration-none my-3"
+							>
+								Đăng nhập
+							</a>
+						</Col>
 
-						<Button
-							type="submit"
-							className="text-center btn btn-auth"
-							form="form-register"
-							value="submit"
-						>
-							Đăng ký
-						</Button>
+						<Col md={6} xs={12} className="text-center">
+							<Button
+								type="submit"
+								className="text-center btn btn-auth my-3"
+								form="form-register"
+								value="submit"
+							>
+								Đăng ký
+							</Button>
+						</Col>
 					</div>
 				</Form>
 			</div>

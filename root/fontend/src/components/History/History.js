@@ -4,7 +4,7 @@ import moment from "moment";
 
 export default function History({ purchase }) {
 	return (
-		<Table striped bordered>
+		<Table striped bordered responsive>
 			<thead>
 				<tr>
 					<th>#</th>

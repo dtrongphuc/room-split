@@ -2,13 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./components/App";
-// import Login from "./components/pages/Login";
-// import HomePage from "./components/pages/HomePage";
 
 import "antd/dist/antd.css";
 import "./index.css";
 import "./style/common.css";
 import "./style/override.css";
+import "./style/responsive.css";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(<App />, document.getElementById("root"));

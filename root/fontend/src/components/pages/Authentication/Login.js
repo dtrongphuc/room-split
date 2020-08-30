@@ -86,7 +86,7 @@ const Login = () => {
 						<Form.Label className="text-right form-label form-label__auth">
 							<UserOutlined className="auth-icon" />
 						</Form.Label>
-						<Col sm="10">
+						<Col xs="10">
 							<Form.Control
 								type="text"
 								placeholder="Tài khoản"
@@ -111,7 +111,7 @@ const Login = () => {
 						<Form.Label className="text-right form-label form-label__auth">
 							<LockOutlined className="auth-icon" />
 						</Form.Label>
-						<Col sm="10">
+						<Col xs="10">
 							<Form.Control
 								type="password"
 								value={password}
@@ -124,21 +124,25 @@ const Login = () => {
 							/>
 						</Col>
 					</Form.Group>
-					<div className="d-flex align-items-center justify-content-around mt-4 mb-2 full-width">
-						<a
-							href="/register"
-							className="text text-decoration-none"
-						>
-							Đăng ký
-						</a>
+					<div className="d-flex align-items-center justify-content-around mt-4 full-width row no-gutters">
+						<Col md={6} xs={12} className="text-center">
+							<a
+								href="/register"
+								className="text text-decoration-none my-3"
+							>
+								Đăng ký
+							</a>
+						</Col>
 
-						<Button
-							type="submit"
-							form="form-login"
-							className="text-center btn btn-auth"
-						>
-							Đăng nhập
-						</Button>
+						<Col md={6} xs={12} className="text-center">
+							<Button
+								type="submit"
+								form="form-login"
+								className="text-center btn btn-auth my-3"
+							>
+								Đăng nhập
+							</Button>
+						</Col>
 					</div>
 				</Form>
 			</div>

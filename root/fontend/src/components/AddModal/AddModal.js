@@ -64,7 +64,7 @@ function AddModal({ ...props }) {
 						/>
 					</Form.Group>
 					<Form.Row>
-						<Col>
+						<Col md={4} sm={12}>
 							<Form.Group
 								className="mb-3"
 								controlId="formProductPrice"
@@ -79,7 +79,7 @@ function AddModal({ ...props }) {
 								/>
 							</Form.Group>
 						</Col>
-						<Col>
+						<Col md={4} sm={12}>
 							<Form.Group
 								className="mb-3"
 								controlId="formProductQuantity"
@@ -94,14 +94,17 @@ function AddModal({ ...props }) {
 								/>
 							</Form.Group>
 						</Col>
-						<Col>
+						<Col md={4} sm={12}>
 							<Form.Group
 								className="mb-3"
 								controlId="formProductDate"
 							>
-								<Form.Label>Ngày mua</Form.Label>
+								<Form.Label className="mr-2">
+									Ngày mua
+								</Form.Label>
 								<Space direction="vertical" size={12}>
 									<DatePicker
+										id="formProductDate"
 										picker="date"
 										defaultValue={moment()}
 										name="productDate"

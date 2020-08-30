@@ -1,0 +1,25 @@
+@media (min-width: 576px) {
+	.modal-dialog {
+		max-width: 600px;
+		margin: 1.75rem auto;
+	}
+}
+@media (max-width: 767.98px) {
+	.user-dropdown {
+		width: 250px !important;
+	}
+
+	.form-label__auth {
+		width: 36px !important;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.auth-form {
+		width: 290px !important;
+	}
+
+	.options-form {
+		width: 240px !important;
+	}
+}

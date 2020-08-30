@@ -24,12 +24,11 @@
 }
 
 .auth {
-	height: 100vh;
+	margin: 20px 0;
 }
 
 .wrapper {
 	z-index: 1;
-	padding: 40px;
 }
 
 .auth-title {
@@ -120,4 +119,9 @@
 
 .focus-active > .form-label__auth > .auth-icon {
 	color: #d5577f;
+}
+
+.options-form {
+	width: 390px;
+	margin: 80px auto;
 }

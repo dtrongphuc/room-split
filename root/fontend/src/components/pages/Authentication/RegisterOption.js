@@ -115,7 +115,7 @@ const RegisterOption = () => {
 	) : (
 		<div>
 			<div className="bg"></div>
-			<div className="wrapper d-flex justify-content-center align-items-center">
+			<div className="wrapper d-flex justify-content-center align-items-center options-form">
 				{selected ? (
 					""
 				) : (
@@ -123,22 +123,25 @@ const RegisterOption = () => {
 						<Card.Header>
 							<h3>Xin chào {currentUser}</h3>
 						</Card.Header>
-						<Card.Body className="p-md-5 p-sm-3">
-							<Button
-								className="btn m-3 btn-auth"
-								variant="primary"
-								onClick={switchToCreateRoom}
-							>
-								Tạo phòng mới
-							</Button>
-
-							<Button
-								className="btn m-3 btn-auth"
-								variant="primary"
-								onClick={switchToJoinRoom}
-							>
-								Tham gia phòng
-							</Button>
+						<Card.Body className="row no-gutters">
+							<Col md={6} xs={12} className="my-3">
+								<Button
+									className="btn m-3 btn-auth"
+									variant="primary"
+									onClick={switchToCreateRoom}
+								>
+									Tạo phòng mới
+								</Button>
+							</Col>
+							<Col md={6} xs={12} className="my-3">
+								<Button
+									className="btn m-3 btn-auth"
+									variant="primary"
+									onClick={switchToJoinRoom}
+								>
+									Tham gia phòng
+								</Button>
+							</Col>
 						</Card.Body>
 					</Card>
 				)}
@@ -173,7 +176,7 @@ const RegisterOption = () => {
 								<Form.Label className="text-right form-label form-label__auth">
 									<TagOutlined className="auth-icon" />
 								</Form.Label>
-								<Col sm="10">
+								<Col xs="10">
 									<Form.Control
 										type="text"
 										placeholder="Tên phòng"
@@ -197,7 +200,7 @@ const RegisterOption = () => {
 								<Form.Label className="text-right form-label form-label__auth">
 									<DollarOutlined className="auth-icon" />
 								</Form.Label>
-								<Col sm="10">
+								<Col xs="10">
 									<Form.Control
 										type="number"
 										min="0"
@@ -224,7 +227,7 @@ const RegisterOption = () => {
 								<Form.Label className="text-right form-label form-label__auth">
 									<DollarOutlined className="auth-icon" />
 								</Form.Label>
-								<Col sm="10">
+								<Col xs="10">
 									<Form.Control
 										type="number"
 										min="0"
@@ -281,7 +284,7 @@ const RegisterOption = () => {
 								<Form.Label className="text-right form-label form-label__auth">
 									<KeyOutlined className="auth-icon" />
 								</Form.Label>
-								<Col sm="10">
+								<Col xs="10">
 									<Form.Control
 										type="text"
 										placeholder="Mã phòng"
