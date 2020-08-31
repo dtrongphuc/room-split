@@ -40,6 +40,7 @@ export const HomeProvider = (props) => {
 				setMonth,
 				setYear,
 				getData,
+				priceSplit: room.priceSplit,
 			}}
 		>
 			{props.children}

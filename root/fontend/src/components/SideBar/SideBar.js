@@ -23,6 +23,13 @@ export default function SideBar() {
 		}
 	};
 
+	const currencyFormat = (number) => {
+		return new Intl.NumberFormat("vi-VN", {
+			style: "currency",
+			currency: "VND",
+		}).format(number);
+	};
+
 	return (
 		<div className="sidebar">
 			<ul className="sidebar-list">
@@ -40,11 +47,27 @@ export default function SideBar() {
 				</li>
 				<li className="d-flex align-items-center my-3">
 					<AttachMoneyRounded className="sidebar-icon" />
-					<p className="sidebar-text">Giá phòng: {room.price}</p>
+					<p className="sidebar-text">
+						Giá phòng: {currencyFormat(room.price)}
+					</p>
 				</li>
 				<li className="d-flex align-items-center my-3">
 					<AttachMoneyRounded className="sidebar-icon" />
-					<p className="sidebar-text">Tiền khác: {room.otherPrice}</p>
+					<p className="sidebar-text">
+						Tiền khác: {currencyFormat(room.otherPrice)}
+					</p>
+				</li>
+				<li className="d-flex align-items-center my-3">
+					<AttachMoneyRounded className="sidebar-icon" />
+					<p className="sidebar-text">
+						Thu chi hiện tại: {currencyFormat(room.totalPrice)}
+					</p>
+				</li>
+				<li className="d-flex align-items-center my-3">
+					<AttachMoneyRounded className="sidebar-icon" />
+					<p className="sidebar-text">
+						Tiền 1 người: {currencyFormat(room.priceSplit)}
+					</p>
 				</li>
 				<li className="d-flex align-items-center my-3">
 					<label form="month" className="mb-0 mr-2">

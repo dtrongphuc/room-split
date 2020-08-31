@@ -6,7 +6,7 @@ import { Collapse } from "antd";
 const { Panel } = Collapse;
 
 export default function AccordionTable() {
-	const { membersData } = useContext(HomeContext);
+	const { membersData, priceSplit } = useContext(HomeContext);
 	return (
 		<>
 			{membersData &&
@@ -19,7 +19,11 @@ export default function AccordionTable() {
 						className="my-4"
 					>
 						<Panel header={member.realname} key={index}>
-							<History purchase={member.purchase} />
+							<History
+								purchase={member.purchase}
+								priceOfMember={member.priceOfMember}
+								priceSplit={priceSplit}
+							/>
 						</Panel>
 					</Collapse>
 				))}

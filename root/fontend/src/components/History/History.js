@@ -1,9 +1,8 @@
 import React from "react";
 import { Table } from "antd";
-// import { Table } from "react-bootstrap";
 import moment from "moment";
 
-export default function History({ purchase }) {
+export default function History({ purchase, priceOfMember, priceSplit }) {
 	const data = purchase.map((item, index) => {
 		let itemData = {
 			key: index + 1,
@@ -59,37 +58,31 @@ export default function History({ purchase }) {
 		},
 	];
 
+	const calculatePrice = () => {
+		let result = priceOfMember - priceSplit;
+
+		if (result > 0) {
+			return (
+				"+" +
+				new Intl.NumberFormat("vi-VN", {
+					style: "currency",
+					currency: "VND",
+				}).format(result)
+			);
+		}
+		return new Intl.NumberFormat("vi-VN", {
+			style: "currency",
+			currency: "VND",
+		}).format(result);
+	};
+
 	return (
-		// <Table striped bordered responsive>
-		// 	<thead>
-		// 		<tr>
-		// 			<th>#</th>
-		// 			<th>Sản phẩm</th>
-		// 			<th>Thời gian</th>
-		// 			<th>Giá</th>
-		// 			<th>Số lượng</th>
-		// 			<th>Tổng tiền</th>
-		// 		</tr>
-		// 	</thead>
-		// 	<tbody>
-		// 		{purchase &&
-		// 			purchase.map((item, index) => (
-		// 				<tr key={index}>
-		// 					<td>{index + 1}</td>
-		// 					<td>{item.productName}</td>
-		// 					<td>{moment(item.date).format("DD-MM-YYYY")}</td>
-		// 					<td>{item.price}</td>
-		// 					<td>{item.quantity}</td>
-		// 					<td>{item.totalPrice}</td>
-		// 				</tr>
-		// 			))}
-		// 	</tbody>
-		// </Table>
 		<Table
 			dataSource={data}
 			columns={columns}
 			pagination={false}
 			scroll={{ x: 400 }}
+			footer={calculatePrice}
 		/>
 	);
 }

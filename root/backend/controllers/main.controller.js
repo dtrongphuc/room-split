@@ -74,13 +74,17 @@ let getAll = async (req, res) => {
 	try {
 		const { data } = req.jwtDecoded;
 		const { month, year } = req.query;
+		let totalPricePurchase = 0;
 
-		const currentUser = await User.findById(data._id);
+		const currentUser = await User.findById(data._id).exec();
 		const users = await User.find({
 			room: data.room,
 			_id: { $ne: currentUser._id },
 		});
-		const room = await Room.findById(data.room);
+		const room = await Room.findById(
+			data.room,
+			"name code price memberCount otherPrice -_id"
+		).exec();
 
 		let currentHistory = await getHistory(
 			currentUser._id,
@@ -88,10 +92,18 @@ let getAll = async (req, res) => {
 			parseInt(year)
 		);
 
+		let priceOfCurrentUser = currentHistory.reduce(
+			(total, item) => total + item.totalPrice,
+			0
+		);
+
+		totalPricePurchase += priceOfCurrentUser;
+
 		let currentUserData = {
 			_id: currentUser._id,
 			realname: currentUser.realname,
 			purchase: currentHistory,
+			priceOfMember: priceOfCurrentUser,
 		};
 
 		let membersData = await Promise.all(
@@ -101,18 +113,32 @@ let getAll = async (req, res) => {
 					parseInt(month),
 					parseInt(year)
 				);
+				let priceOfMember = history.reduce(
+					(total, item) => total + item.totalPrice,
+					0
+				);
+
+				totalPricePurchase += priceOfMember;
+
 				return {
 					_id: user._id,
 					realname: user.realname,
 					purchase: history,
+					priceOfMember: priceOfMember,
 				};
 			})
 		);
 
+		let priceSplit = Math.ceil(totalPricePurchase / room.memberCount);
+
 		res.status(200).json({
 			currentUser: currentUserData,
 			membersData: [currentUserData].concat(membersData),
-			room: room,
+			room: {
+				...room.toObject(),
+				totalPrice: totalPricePurchase,
+				priceSplit: priceSplit,
+			},
 		});
 	} catch (err) {
 		res.status(500).json(err);

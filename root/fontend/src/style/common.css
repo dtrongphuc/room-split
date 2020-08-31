@@ -9,6 +9,9 @@ body {
 	background-color: var(--body-bg-color) !important;
 }
 
+.full-width {
+	width: 100%;
+}
 .pointer {
 	cursor: pointer;
 }

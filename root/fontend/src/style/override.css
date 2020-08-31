@@ -36,9 +36,6 @@ select:-webkit-autofill {
 	height: 200px !important;
 }
 
-@media (min-width: 576px) {
-	.modal-dialog {
-		max-width: 600px;
-		margin: 1.75rem auto;
-	}
+.ant-table-footer {
+	text-align: center;
 }
