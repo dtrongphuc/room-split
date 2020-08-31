@@ -26,7 +26,8 @@ let logout = async (req, res) => {
 						$elemMatch: refreshToken,
 					},
 				},
-			}
+			},
+			{ useFindAndModify: false }
 		);
 	}
 
