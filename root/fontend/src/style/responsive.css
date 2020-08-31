@@ -12,6 +12,13 @@
 	.form-label__auth {
 		width: 36px !important;
 	}
+
+	.ant-table-thead > tr > th,
+	.ant-table-tbody > tr > td,
+	.ant-table tfoot > tr > th,
+	.ant-table tfoot > tr > td {
+		padding: 4px 4px !important;
+	}
 }
 
 @media (max-width: 575.98px) {
