@@ -43,10 +43,8 @@ const Login = () => {
 				.login(username, password)
 				.then((res) => {
 					if (res) {
-						console.log(res);
 						setSuccessful(true);
 						setMessage("");
-						console.log("form login redirecting...");
 						history.push("/");
 					}
 				})
