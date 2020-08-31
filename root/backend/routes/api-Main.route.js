@@ -13,7 +13,6 @@ let initAPIs = (app) => {
 		mainValidate.postPurchase,
 		mainController.postPurchase
 	);
-	Router.get("/get-purchase", mainController.getHistory);
 	return app.use("/api", Router);
 };
 

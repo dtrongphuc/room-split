@@ -19,6 +19,7 @@ let initAPIs = (app) => {
 	);
 	Router.get("/isAuth", authMiddleware.isAuth, authController.isAuth);
 	Router.get("/logout", authController.logout);
+	Router.get("/refresh-token", authController.refreshToken);
 	return app.use("/api/auth", Router);
 };
 

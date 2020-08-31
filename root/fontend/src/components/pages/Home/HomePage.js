@@ -10,34 +10,6 @@ import "./HomePage.css";
 
 function HomePage() {
 	// state
-	// const [currentUser, setCurrentUser] = useState("");
-	// const [membersData, setMembersData] = useState([]);
-	// const [room, setRoom] = useState("");
-	// const [month] = useState(8);
-	// const [year] = useState(2020);
-
-	// const getData = useCallback(async () => {
-	// 	try {
-	// 		const response = await mainService.getAll({
-	// 			month: month,
-	// 			year: year,
-	// 		});
-	// 		if (response) {
-	// 			setCurrentUser(response.currentUser);
-	// 			setMembersData(response.membersData);
-	// 			setRoom(response.room);
-	// 		}
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// }, [month, year]);
-
-	// useEffect(() => {
-	// 	console.log("start effect");
-	// 	getData();
-	// }, [getData]);
-
-	//handleChangeMonth = () => {};
 	return (
 		<HomeProvider>
 			<Header />

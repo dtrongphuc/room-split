@@ -5,8 +5,8 @@ let generateToken = (user, secretSignature, tokenLife) => {
 	return new Promise((resolve, reject) => {
 		const userData = {
 			_id: user._id,
-			name: user.realname,
-			room: user.room._id,
+			realname: user.realname,
+			room: user.room,
 		};
 
 		jwt.sign(

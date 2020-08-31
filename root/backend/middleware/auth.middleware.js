@@ -9,9 +9,10 @@ exports.isAuth = async (req, res, next) => {
 		req.body.token ||
 		req.query.token ||
 		req.headers["x-access-token"];
-
-	const accessTokenFromClient =
+	const refreshTokenFromClient =
 		tokenFromClient && tokenFromClient.split(/[\=\;]/)[1];
+	const accessTokenFromClient =
+		tokenFromClient && tokenFromClient.split(/[\=\;]/)[3];
 	if (tokenFromClient && accessTokenFromClient) {
 		try {
 			// Giải mã xem token có hợp lệ không ?
@@ -30,9 +31,17 @@ exports.isAuth = async (req, res, next) => {
 				},
 			});
 		}
+	} else if (refreshTokenFromClient) {
+		return res.status(307).send({
+			success: false,
+			error: {
+				message: "Token expired.",
+			},
+		});
 	} else {
 		// Không tồn tại token trong request
-		return res.status(403).send({
+		console.log("Không tồn tại token trong request");
+		return res.status(401).send({
 			success: false,
 			error: {
 				message: "No token provided.",

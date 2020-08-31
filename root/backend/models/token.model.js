@@ -3,7 +3,7 @@ var Schema = mongooose.Schema;
 
 var tokenSchema = new Schema(
 	{
-		tokenList: Object,
+		tokenList: Array,
 	},
 	{ versionKey: false }
 );

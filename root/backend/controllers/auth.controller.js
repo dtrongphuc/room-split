@@ -12,7 +12,24 @@ const refreshTokenSecret =
 	process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-@dtrongphuc";
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650days";
 
-let logout = (req, res) => {
+let logout = async (req, res) => {
+	const TokenFromClient = req.headers["cookie"];
+	const refreshTokenFormClient =
+		TokenFromClient && TokenFromClient.split(/[\=\;]/)[1];
+
+	if (refreshTokenFormClient) {
+		await Token.findOneAndUpdate(
+			{},
+			{
+				$pull: {
+					tokenList: {
+						$elemMatch: refreshToken,
+					},
+				},
+			}
+		);
+	}
+
 	res.clearCookie("accessToken");
 	res.clearCookie("refreshToken");
 	res.status(200).send({ success: true });
@@ -28,14 +45,19 @@ let login = async (req, res) => {
 		})
 			.populate("room")
 			.then((data) => {
+				const decoded = {
+					_id: data._id,
+					realname: data.realname,
+					room: data.room._id,
+				};
 				accessToken = jwtHelper.generateToken(
-					data,
+					decoded,
 					accessTokenSecret,
 					accessTokenLife
 				);
 
 				refreshToken = jwtHelper.generateToken(
-					data,
+					decoded,
 					refreshTokenSecret,
 					refreshTokenLife
 				);
@@ -44,10 +66,10 @@ let login = async (req, res) => {
 					async (values) => {
 						[accessToken, refreshToken] = values;
 						let token = await Token.findOne({});
-						let tokenList = (token && token["tokenList"]) || {};
-						if (tokenList && Object.keys(tokenList).length == 0) {
+						let tokenList = {};
+						if (!token) {
 							await Token.create({
-								tokenList: {},
+								tokenList: [],
 							});
 						}
 
@@ -58,18 +80,24 @@ let login = async (req, res) => {
 
 						await Token.findOneAndUpdate(
 							{},
-							{ tokenList: tokenList },
+							{
+								$push: {
+									tokenList: {
+										$each: [tokenList],
+									},
+								},
+							},
 							{ useFindAndModify: false }
 						);
-
-						res.cookie("accessToken", accessToken, {
-							httpOnly: true,
-							maxAge: parseInt(process.env.COOKIE_LIFE),
-						});
 
 						res.cookie("refreshToken", refreshToken, {
 							httpOnly: true,
 							maxAge: 864000000 * 365,
+						});
+
+						res.cookie("accessToken", accessToken, {
+							httpOnly: true,
+							maxAge: parseInt(process.env.COOKIE_LIFE),
 						});
 
 						return res
@@ -81,22 +109,6 @@ let login = async (req, res) => {
 	} catch (error) {
 		return res.status(500).json(error);
 	}
-	// let username = req.body.username;
-
-	// const token = generateAccessToken({ username: username });
-
-	// res.json(token);
-	// User.findOne({ username: username })
-	// 	.populate("room")
-	// 	.exec((err, data) => {
-	// 		if (data) {
-	// 			res.send(data);
-	// 		} else {
-	// 			res.status(404).send({
-	// 				message: err.message || "Not found",
-	// 			});
-	// 		}
-	// 	});
 };
 
 let register = async (req, res) => {
@@ -205,24 +217,32 @@ let createRoom = async (req, res) => {
 };
 
 let refreshToken = async (req, res) => {
-	const refreshTokenFromClient = req.body.refreshToken;
+	const TokenFromClient = req.headers["cookie"];
+	const refreshTokenFormClient =
+		TokenFromClient && TokenFromClient.split(/[\=\;]/)[1];
 	const token = await Token.findOne({});
 	const tokenList = (token && token["tokenList"]) || {};
 
-	if (refreshTokenFromClient && tokenList[refreshTokenFromClient]) {
+	if (refreshTokenFormClient && tokenList[refreshTokenFormClient]) {
 		try {
 			var accessToken;
 			jwtHelper
-				.verifyToken(refreshTokenFromClient, refreshTokenSecret)
+				.verifyToken(refreshTokenFormClient, refreshTokenSecret)
 				.then(async (decoded) => {
 					accessToken = await jwtHelper.generateToken(
 						decoded.data,
 						accessTokenSecret,
 						accessTokenLife
 					);
+					res.cookie("accessToken", accessToken, {
+						httpOnly: true,
+						maxAge: parseInt(process.env.COOKIE_LIFE),
+					});
+
+					return res.status(200).json({ accessToken });
 				});
 
-			return res.status(200).json({ accessToken });
+			console.log("renew access token");
 		} catch (error) {
 			res.status(403).send({
 				messeage: "Invalid refresh token.",
