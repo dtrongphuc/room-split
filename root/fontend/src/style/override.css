@@ -39,3 +39,8 @@ select:-webkit-autofill {
 .ant-table-footer {
 	text-align: center;
 }
+
+.ant-input-number,
+.ant-checkbox-group {
+	width: 100%;
+}

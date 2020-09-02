@@ -1,34 +1,41 @@
 const User = require("../models/user.model");
 const Room = require("../models/room.model");
 const Purchase = require("../models/purchase.model");
+const Bill = require("../models/bill.model");
+const mongoose = require("mongoose");
 
-let postPurchase = (req, res) => {
+let postPurchase = async (req, res) => {
 	const {
 		userID,
 		productName,
 		productPrice,
 		productQuantity,
 		productDate,
+		members,
 	} = req.body;
 
 	try {
-		User.findById(userID).exec((err, user) => {
-			if (err) {
-				res.status(500).send({
-					success: false,
-					error: {
-						message: err,
-					},
-				});
-			}
-			Purchase.create({
-				user: user._id,
-				date: productDate,
-				productName: productName,
-				price: productPrice,
-				quantity: productQuantity,
-				totalPrice: productPrice * productQuantity,
-			});
+		let user = await User.findById(userID);
+
+		let date = productDate.split("-");
+		let year = Number.parseInt(date[0]);
+		let month = Number.parseInt(date[1]);
+		let expense = Math.ceil(
+			(productPrice * productQuantity) / members.length
+		);
+
+		members.map(
+			async (member) =>
+				await updateBill(member, expense, user.room, month, year)
+		);
+
+		Purchase.create({
+			user: user._id,
+			date: productDate,
+			productName: productName,
+			price: productPrice,
+			quantity: productQuantity,
+			totalPrice: productPrice * productQuantity,
 		});
 
 		res.status(200).send({
@@ -37,6 +44,21 @@ let postPurchase = (req, res) => {
 	} catch (err) {
 		res.status(500).json(err);
 	}
+};
+
+let updateBill = async (id, expense, room, month, year) => {
+	let bill = await Bill.aggregate([
+		{
+			$match: {
+				user: mongoose.Types.ObjectId(id),
+				room: mongoose.Types.ObjectId(room),
+				month: month,
+				year: year,
+			},
+		},
+	]);
+
+	await Bill.updateOne({ _id: bill[0]._id }, { $inc: { expense: +expense } });
 };
 
 let getHistory = async (userID, month, year) => {

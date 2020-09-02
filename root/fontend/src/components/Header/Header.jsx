@@ -18,7 +18,7 @@ const Header = () => {
 
 	let history = useHistory();
 
-	const [modalShow, setModalShow] = useState(false);
+	const [modalShow, setModalShow] = useState(true);
 
 	const handleLogout = () => {
 		authService

@@ -1,28 +1,38 @@
 import React, { useState, useContext } from "react";
-import { Modal, Form, Col, Button, Alert } from "react-bootstrap";
+import { Modal, Alert } from "react-bootstrap";
 import moment from "moment";
-import { DatePicker, Space } from "antd";
+import {
+	Form,
+	Input,
+	Button,
+	InputNumber,
+	DatePicker,
+	Row,
+	Col,
+	Checkbox,
+} from "antd";
 
 import { HomeContext } from "../../context/HomeContext";
 import { mainService } from "../../services/main.service";
 import Loader from "../Loader/Loader";
 
 function AddModal({ ...props }) {
-	const { currentUser, getData } = useContext(HomeContext);
+	const { currentUser, membersName, getData } = useContext(HomeContext);
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState("");
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
+	// eslint-disable-next-line
+	const handleSubmit = (values) => {
+		console.log(values);
 		setLoading(true);
 		try {
-			const formData = new FormData(e.target);
 			const data = {
 				userID: currentUser._id,
-				productName: formData.get("productName"),
-				productPrice: formData.get("productPrice"),
-				productQuantity: formData.get("productQuantity"),
-				productDate: formData.get("productDate"),
+				productName: values.productName,
+				productPrice: values.productPrice,
+				productQuantity: values.productQuantity,
+				productDate: values.productDate.format("YYYY-MM-DD"),
+				members: values["member-checkbox-group"],
 			};
 
 			mainService
@@ -42,6 +52,31 @@ function AddModal({ ...props }) {
 		}
 	};
 
+	const layout = {
+		labelCol: {
+			span: 6,
+		},
+		wrapperCol: {
+			span: 18,
+		},
+	};
+
+	const middleLayout = {
+		labelCol: {
+			span: 12,
+		},
+		wrapperCol: {
+			span: 12,
+		},
+	};
+
+	const tailLayout = {
+		wrapperCol: {
+			offset: 8,
+			span: 16,
+		},
+	};
+
 	return loading ? (
 		<Loader loading={loading} />
 	) : (
@@ -53,75 +88,100 @@ function AddModal({ ...props }) {
 			</Modal.Header>
 			<Modal.Body className="show-grid">
 				{message ? <Alert className="alert-dark">{message}</Alert> : ""}
-				<Form onSubmit={handleSubmit}>
-					<Form.Group className="mb-3" controlId="formProductName">
-						<Form.Label>Sản phẩm</Form.Label>
-						<Form.Control
-							type="text"
-							required
-							placeholder="Tên sản phẩm"
-							name="productName"
+				<Form
+					{...layout}
+					name="basic"
+					initialValues={{
+						productQuantity: 1,
+						// eslint-disable-next-line
+						["member-checkbox-group"]: membersName.map(
+							(member) => member._id
+						),
+						productDate: moment(),
+					}}
+					onFinish={handleSubmit}
+				>
+					<Form.Item
+						label="Tên sản phẩm"
+						name="productName"
+						rules={[
+							{
+								required: true,
+								message: "Vui lòng nhập tên sản phẩm!",
+							},
+						]}
+					>
+						<Input />
+					</Form.Item>
+					<Row>
+						<Col span={12}>
+							<Form.Item
+								{...middleLayout}
+								label="Giá"
+								name="productPrice"
+								rules={[
+									{
+										required: true,
+										message: "Vui lòng nhập giá tiền!",
+									},
+								]}
+							>
+								<InputNumber min={0} />
+							</Form.Item>
+						</Col>
+						<Col span={12}>
+							<Form.Item
+								{...middleLayout}
+								label="Số lượng"
+								name="productQuantity"
+								rules={[
+									{
+										required: true,
+										message: "Vui lòng nhập số lượng!",
+									},
+								]}
+							>
+								<InputNumber min={1} />
+							</Form.Item>
+						</Col>
+					</Row>
+					<Form.Item
+						label="Ngày"
+						name="productDate"
+						rules={[
+							{
+								required: true,
+								message: "Vui lòng nhập ngày!",
+							},
+						]}
+					>
+						<DatePicker
+							id="formProductDate"
+							picker="date"
+							format="DD-MM-YYYY"
 						/>
-					</Form.Group>
-					<Form.Row>
-						<Col md={4} sm={12}>
-							<Form.Group
-								className="mb-3"
-								controlId="formProductPrice"
-							>
-								<Form.Label>Giá</Form.Label>
-								<Form.Control
-									type="number"
-									required
-									placeholder="Giá tiền"
-									min="0"
-									name="productPrice"
-								/>
-							</Form.Group>
-						</Col>
-						<Col md={4} sm={12}>
-							<Form.Group
-								className="mb-3"
-								controlId="formProductQuantity"
-							>
-								<Form.Label>Số lượng</Form.Label>
-								<Form.Control
-									type="number"
-									required
-									placeholder="Số lượng"
-									min="1"
-									name="productQuantity"
-								/>
-							</Form.Group>
-						</Col>
-						<Col md={4} sm={12}>
-							<Form.Group
-								className="mb-3"
-								controlId="formProductDate"
-							>
-								<Form.Label className="mr-2">
-									Ngày mua
-								</Form.Label>
-								<Space direction="vertical" size={12}>
-									<DatePicker
-										id="formProductDate"
-										picker="date"
-										defaultValue={moment()}
-										name="productDate"
-									/>
-								</Space>
-							</Form.Group>
-						</Col>
-					</Form.Row>
-					<div className="text-right">
-						<Button
-							variant="primary"
-							type="submit"
-							className="mt-3 mb-2"
-						>
+					</Form.Item>
+					<Form.Item name="member-checkbox-group" label="Tham gia">
+						<Checkbox.Group>
+							<Row>
+								{membersName.map((member, index) => (
+									<Col span={12} key={index + 1}>
+										<Checkbox
+											value={member._id}
+											style={{ lineHeight: "32px" }}
+										>
+											{member.name}
+										</Checkbox>
+									</Col>
+								))}
+							</Row>
+						</Checkbox.Group>
+					</Form.Item>
+					<Form.Item {...tailLayout}>
+						<Button type="primary" htmlType="submit">
 							Thêm
 						</Button>
-					</div>
+					</Form.Item>
 				</Form>
 			</Modal.Body>
 		</Modal>
