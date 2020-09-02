@@ -10,7 +10,7 @@ export const HomeProvider = (props) => {
 	const [membersData, setMembersData] = useState([]);
 	const [room, setRoom] = useState("");
 	const [month, setMonth] = useState(moment().format("M"));
-	const [year, setYear] = useState(2020);
+	const [year, setYear] = useState(moment().format("YYYY"));
 
 	const getData = useCallback(async () => {
 		try {

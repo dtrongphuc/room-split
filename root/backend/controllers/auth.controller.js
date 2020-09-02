@@ -1,11 +1,12 @@
 const bcrypt = require("bcrypt");
+const moment = require("moment");
+
 const jwtHelper = require("../helpers/jwt.helper");
 var randomize = require("randomatic");
 var User = require("../models/user.model");
 var Room = require("../models/room.model");
 var Token = require("../models/token.model");
-
-const saltRound = process.env.SALT_ROUND;
+var Bill = require("../models/bill.model");
 
 const accessTokenSecret =
 	process.env.ACCESS_TOKEN_SECRET || "access-token-secret-@dtrongphuc";
@@ -14,6 +15,21 @@ const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "3days";
 const refreshTokenSecret =
 	process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-@dtrongphuc";
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650days";
+
+let createBill = async (username, roomID, month, year) => {
+	try {
+		let user = await User.findOne({ username: username }, "_id");
+		await Bill.create({
+			user: user._id,
+			room: roomID,
+			month: month,
+			year: year,
+			expense: 0,
+		});
+	} catch (error) {
+		throw new error(error);
+	}
+};
 
 let logout = async (req, res) => {
 	const TokenFromClient = req.headers["cookie"];
@@ -99,15 +115,15 @@ let login = async (req, res) => {
 						res.cookie("refreshToken", refreshToken, {
 							httpOnly: true,
 							maxAge: 864000000 * 365,
-							sameSite: "none",
-							secure: true,
+							// sameSite: "none",
+							// secure: true,
 						});
 
 						res.cookie("accessToken", accessToken, {
 							httpOnly: true,
 							maxAge: parseInt(process.env.COOKIE_LIFE),
-							sameSite: "none",
-							secure: true,
+							// sameSite: "none",
+							// secure: true,
 						});
 
 						return res
@@ -164,6 +180,13 @@ let joinRoom = (req, res) => {
 				});
 			}
 
+			await createBill(
+				username,
+				room._id,
+				moment().format("M"),
+				moment().format("YYYY")
+			);
+
 			await Room.findByIdAndUpdate(
 				room._id,
 				{
@@ -197,32 +220,36 @@ let createRoom = async (req, res) => {
 		let memberCount = 1;
 		let otherPrice = req.body.otherPrice;
 		let roomCode;
-		let room;
+		let isMatch;
 		do {
 			roomCode = randomize("0", 10);
-			room = await Room.findOne({ code: roomCode }).exec();
-		} while (room);
+			isMatch = await Room.findOne({ code: roomCode }).exec();
+		} while (isMatch);
 
-		const newRoom = new Room({
+		const room = new Room({
 			name: roomName,
 			code: roomCode,
 			price: price,
 			memberCount: memberCount,
 			otherPrice: otherPrice,
 		});
-		newRoom.save().then(() => {
-			Room.findOne({ code: roomCode }).then((room) => {
-				if (room) {
-					User.findOneAndUpdate(
-						{ username: username },
-						{ room: room._id },
-						{ useFindAndModify: false }
-					).then(() => {
-						return login(req, res);
-					});
-				}
+		const newRoom = await room.save();
+		if (newRoom) {
+			await createBill(
+				username,
+				newRoom._id,
+				moment().format("M"),
+				moment().format("YYYY")
+			);
+
+			User.findOneAndUpdate(
+				{ username: username },
+				{ room: newRoom._id },
+				{ useFindAndModify: false }
+			).then(() => {
+				return login(req, res);
 			});
-		});
+		}
 	} catch (error) {
 		return res.status(500).json(error);
 	}
