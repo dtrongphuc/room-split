@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { AuthProvider } from "../context/AuthContext";
 import Loader from "./Loader/Loader";
 
 const LoginPage = lazy(() => import("./pages/Authentication/Login"));
@@ -15,18 +16,20 @@ function App() {
 	return (
 		<Router>
 			<Suspense fallback={<Loader loading={true} />}>
-				<Switch>
-					<Route exact path="/login">
-						<LoginPage />
-					</Route>
-					<Route exact path="/register">
-						<RegisterPage />
-					</Route>
-					<Route exact path="/register/options">
-						<RegisterOption />
-					</Route>
-					<PrivateRoute exact path="/" component={HomePage} />
-				</Switch>
+				<AuthProvider>
+					<Switch>
+						<Route exact path="/login">
+							<LoginPage />
+						</Route>
+						<Route exact path="/register">
+							<RegisterPage />
+						</Route>
+						<Route exact path="/register/options">
+							<RegisterOption />
+						</Route>
+						<PrivateRoute exact path="/" component={HomePage} />
+					</Switch>
+				</AuthProvider>
 			</Suspense>
 		</Router>
 	);

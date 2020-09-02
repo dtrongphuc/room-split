@@ -2,7 +2,7 @@
 	"name": "room-split-node-express-mongodb",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "server.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon --inspect ./server.js",
@@ -11,6 +11,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"bcrypt": "^5.0.0",
 		"body-parser": "^1.19.0",
 		"cookie-parser": "^1.4.5",
 		"cors": "^2.8.5",

@@ -40,7 +40,6 @@ let postPurchase = (req, res) => {
 };
 
 let getHistory = async (userID, month, year) => {
-	let user = await User.findById(userID);
 	let data = await Purchase.aggregate([
 		{
 			$addFields: {
@@ -52,7 +51,7 @@ let getHistory = async (userID, month, year) => {
 			$match: {
 				month: month,
 				year: year,
-				user: user._id,
+				user: userID,
 			},
 		},
 		{
@@ -75,8 +74,7 @@ let getAll = async (req, res) => {
 		const { data } = req.jwtDecoded;
 		const { month, year } = req.query;
 		let totalPricePurchase = 0;
-
-		const currentUser = await User.findById(data._id).exec();
+		const currentUser = await User.findById(data._id);
 		const users = await User.find({
 			room: data.room,
 			_id: { $ne: currentUser._id },

@@ -6,10 +6,10 @@ export default function ({ loading }) {
 	useEffect(() => {
 		let element = document.querySelector(".loader-wrapper");
 		element.style.opacity = 1;
-		element.style.transform = "translateY(40px)";
+		element.style.transform = "translate(-50% ,40px)";
 
 		return async () => {
-			element.style.transform = "translateY(0px)";
+			element.style.transform = "translate(-50% ,-50px)";
 		};
 	}, []);
 	return (

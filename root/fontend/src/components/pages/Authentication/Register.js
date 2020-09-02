@@ -121,6 +121,7 @@ function Register() {
 								type="text"
 								placeholder="Tài khoản"
 								required
+								autoComplete="username"
 								value={username}
 								onChange={onChangeUsername}
 								className="auth-input no-outline px-3"
@@ -147,6 +148,7 @@ function Register() {
 								required
 								onChange={onChangePassword}
 								placeholder="Mật khẩu"
+								autoComplete="new-password"
 								className="auth-input no-outline px-3"
 								onFocus={() => onInputFocus("passwordConfirm")}
 								onBlur={() => onFocusOut("passwordConfirm")}
@@ -171,6 +173,7 @@ function Register() {
 								required
 								onChange={onChangePasswordConfirm}
 								placeholder="Nhập lại mật khẩu"
+								autoComplete="new-password"
 								className="auth-input no-outline px-3"
 								onFocus={() => onInputFocus("password")}
 								onBlur={() => onFocusOut("password")}

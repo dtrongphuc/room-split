@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const Room = require("../models/room.model");
 const User = require("../models/user.model");
 
@@ -9,10 +10,21 @@ exports.postLogin = async (req, res, next) => {
 	let username = req.body.username;
 	let password = req.body.password;
 
-	let user = await User.findOne({ username: username, password: password });
+	let user = await User.findOne({ username: username });
 	if (!user) {
 		return res.status(401).send({
 			message: "Username or password is incorrect.",
+		});
+	}
+
+	const match = await bcrypt.compare(password, user.password);
+
+	if (!match) {
+		return res.status(401).send({
+			success: false,
+			error: {
+				message: "Username or password is incorrect.",
+			},
 		});
 	}
 	next();

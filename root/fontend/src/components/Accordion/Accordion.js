@@ -6,7 +6,7 @@ import { Collapse } from "antd";
 const { Panel } = Collapse;
 
 export default function AccordionTable() {
-	const { membersData, priceSplit } = useContext(HomeContext);
+	const { membersData, priceSplit, loading } = useContext(HomeContext);
 	return (
 		<>
 			{membersData &&
@@ -23,6 +23,7 @@ export default function AccordionTable() {
 								purchase={member.purchase}
 								priceOfMember={member.priceOfMember}
 								priceSplit={priceSplit}
+								loading={loading}
 							/>
 						</Panel>
 					</Collapse>

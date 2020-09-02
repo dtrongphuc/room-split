@@ -1,44 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
-
-import { authService } from "../services/auth.service";
+import { AuthContext } from "../context/AuthContext";
+import Loader from "./Loader/Loader";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-	const [isLogged, setIsLogged] = useState(true);
-
-	useEffect(() => {
-		let didCancel = false;
-
-		async function isLogged() {
-			try {
-				const response = await authService.isAuth();
-				if (!didCancel) {
-					setIsLogged(response.status === 200 ? true : false);
-				}
-			} catch (err) {
-				setIsLogged(false);
-			}
-		}
-
-		isLogged();
-		return () => {
-			didCancel = true;
-		};
-	}, []);
+	const { isAuth, loading } = useContext(AuthContext);
 
 	return (
 		<Route
 			{...rest}
 			render={(props) =>
-				isLogged ? (
-					<Component {...props} />
+				!loading ? (
+					isAuth ? (
+						<Component {...props} />
+					) : (
+						<Redirect
+							to={{
+								pathname: "/login",
+								state: { from: props.location },
+							}}
+						/>
+					)
 				) : (
-					<Redirect
-						to={{
-							pathname: "/login",
-							state: { from: props.location },
-						}}
-					/>
+					<Loader loading={true} />
 				)
 			}
 		/>

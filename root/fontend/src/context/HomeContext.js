@@ -1,17 +1,20 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { mainService } from "../services/main.service";
+import moment from "moment";
 
+import { mainService } from "../services/main.service";
 export const HomeContext = React.createContext();
 
 export const HomeProvider = (props) => {
+	const [loading, setLoading] = useState(false);
 	const [currentUser, setCurrentUser] = useState("");
 	const [membersData, setMembersData] = useState([]);
 	const [room, setRoom] = useState("");
-	const [month, setMonth] = useState(8);
+	const [month, setMonth] = useState(moment().format("M"));
 	const [year, setYear] = useState(2020);
 
 	const getData = useCallback(async () => {
 		try {
+			setLoading(true);
 			const response = await mainService.getAll({
 				month: month,
 				year: year,
@@ -21,19 +24,18 @@ export const HomeProvider = (props) => {
 				setMembersData(response.membersData);
 				setRoom(response.room);
 			}
-		} catch (err) {
-			console.log(err);
-		}
+		} catch (err) {}
+		setLoading(false);
 	}, [month, year]);
 
 	useEffect(() => {
-		console.log("start effect");
 		getData();
 	}, [getData]);
 
 	return (
 		<HomeContext.Provider
 			value={{
+				loading,
 				currentUser,
 				membersData,
 				room,

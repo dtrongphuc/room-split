@@ -1,8 +1,11 @@
+const bcrypt = require("bcrypt");
 const jwtHelper = require("../helpers/jwt.helper");
 var randomize = require("randomatic");
 var User = require("../models/user.model");
 var Room = require("../models/room.model");
 var Token = require("../models/token.model");
+
+const saltRound = process.env.SALT_ROUND;
 
 const accessTokenSecret =
 	process.env.ACCESS_TOKEN_SECRET || "access-token-secret-@dtrongphuc";
@@ -91,14 +94,20 @@ let login = async (req, res) => {
 							{ useFindAndModify: false }
 						);
 
+						res.setHeader("Cache-Control", "private");
+
 						res.cookie("refreshToken", refreshToken, {
 							httpOnly: true,
 							maxAge: 864000000 * 365,
+							sameSite: "none",
+							secure: true,
 						});
 
 						res.cookie("accessToken", accessToken, {
 							httpOnly: true,
 							maxAge: parseInt(process.env.COOKIE_LIFE),
+							sameSite: "none",
+							secure: true,
 						});
 
 						return res
@@ -118,9 +127,11 @@ let register = async (req, res) => {
 		let password = req.body.password;
 		let realName = req.body.realname;
 
+		let hashPassword = bcrypt.hashSync(password, 10);
+
 		await User.create({
 			username: username,
-			password: password,
+			password: hashPassword,
 			realname: realName,
 		});
 

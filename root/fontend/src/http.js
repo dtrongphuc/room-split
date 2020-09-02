@@ -1,19 +1,15 @@
+require("dotenv").config();
 const axios = require("axios");
 
+axios.defaults.withCredentials = true;
+
 const axiosRequest = axios.create({
-	baseURL: "http://localhost:8080/api/",
-	withCredantials: true,
-	// headers: {
-	// 	"content-type": "application/json",
-	// 	"x-access-token": `${token}`,
-	// 	...headers,
-	// },
+	baseURL: process.env.REACT_APP_BASE_URL,
 	headers: {
 		"content-type": "application/json",
 	},
-	withCredentials: true,
 	crossDomain: true,
-	timeout: 10000,
+	timeout: 60000,
 });
 
 axiosRequest.interceptors.response.use(
@@ -27,6 +23,7 @@ axiosRequest.interceptors.response.use(
 				return Promise.reject(err);
 			}
 		}
+		return Promise.reject(error);
 	}
 );
 
