@@ -13,6 +13,7 @@ let initAPIs = (app) => {
 		mainValidate.postPurchase,
 		mainController.postPurchase
 	);
+	Router.post("/delete/purchase", mainController.deletePurchase);
 	return app.use("/api", Router);
 };
 

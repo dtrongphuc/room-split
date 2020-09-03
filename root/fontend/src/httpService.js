@@ -34,5 +34,9 @@ class RoomDataService {
 	postPurchase(data) {
 		return axios.post("/add/purchase", data);
 	}
+
+	postDeletePurchase(data) {
+		return axios.post("/delete/purchase", data);
+	}
 }
 export default new RoomDataService();

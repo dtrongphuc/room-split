@@ -1,8 +1,9 @@
+const mongoose = require("mongoose");
+const moment = require("moment");
 const User = require("../models/user.model");
 const Room = require("../models/room.model");
 const Purchase = require("../models/purchase.model");
 const Bill = require("../models/bill.model");
-const mongoose = require("mongoose");
 
 let postPurchase = async (req, res) => {
 	const {
@@ -20,9 +21,10 @@ let postPurchase = async (req, res) => {
 		let date = productDate.split("-");
 		let year = Number.parseInt(date[0]);
 		let month = Number.parseInt(date[1]);
-		let expense = Math.ceil(
-			(productPrice * productQuantity) / members.length
-		);
+		let expense =
+			members.length > 0
+				? (productPrice * productQuantity) / members.length
+				: 0;
 
 		members.map(
 			async (member) =>
@@ -31,11 +33,13 @@ let postPurchase = async (req, res) => {
 
 		Purchase.create({
 			user: user._id,
+			room: user.room,
 			date: productDate,
 			productName: productName,
 			price: productPrice,
 			quantity: productQuantity,
 			totalPrice: productPrice * productQuantity,
+			members: members.map((member) => mongoose.Types.ObjectId(member)),
 		});
 
 		res.status(200).send({
@@ -57,12 +61,24 @@ let updateBill = async (id, expense, room, month, year) => {
 			},
 		},
 	]);
-
-	await Bill.updateOne({ _id: bill[0]._id }, { $inc: { expense: +expense } });
+	if (!bill) {
+		await Bill.create({
+			user: mongoose.Types.ObjectId(id),
+			room: mongoose.Types.ObjectId(room),
+			month: month,
+			year: year,
+			expense: expense,
+		});
+	} else {
+		await Bill.updateOne(
+			{ _id: bill[0]._id },
+			{ $inc: { expense: +expense } }
+		);
+	}
 };
 
 let getHistory = async (userID, month, year) => {
-	let data = await Purchase.aggregate([
+	let dataMatched = await Purchase.aggregate([
 		{
 			$addFields: {
 				month: { $month: "$date" },
@@ -83,11 +99,24 @@ let getHistory = async (userID, month, year) => {
 				quantity: 1,
 				date: 1,
 				totalPrice: 1,
-				_id: 0,
+				members: 1,
+				_id: 1,
 			},
 		},
 	]);
 
+	let data = await Promise.all(
+		dataMatched.map(async (item) => {
+			let user = await User.populate(item, {
+				path: "members",
+				select: "realname -_id",
+			});
+			return {
+				...user,
+				members: user.members.map((member) => member.toObject()),
+			};
+		})
+	);
 	return data;
 };
 
@@ -112,10 +141,19 @@ let getAll = async (req, res) => {
 			parseInt(year)
 		);
 
-		let priceOfCurrentUser = currentHistory.reduce(
-			(total, item) => total + item.totalPrice,
-			0
-		);
+		let currentBill = await Bill.find({
+			user: currentUser._id,
+			room: currentUser.room,
+			month: parseInt(month),
+			year: parseInt(year),
+		});
+
+		let priceOfCurrentUser = currentHistory.reduce((total, item) => {
+			if (item.members.length === 0) {
+				return total;
+			}
+			return total + item.totalPrice;
+		}, 0);
 
 		totalPricePurchase += priceOfCurrentUser;
 
@@ -124,6 +162,7 @@ let getAll = async (req, res) => {
 			realname: currentUser.realname,
 			purchase: currentHistory,
 			priceOfMember: priceOfCurrentUser,
+			expense: currentBill[0].expense,
 		};
 
 		let membersData = await Promise.all(
@@ -133,10 +172,20 @@ let getAll = async (req, res) => {
 					parseInt(month),
 					parseInt(year)
 				);
-				let priceOfMember = history.reduce(
-					(total, item) => total + item.totalPrice,
-					0
-				);
+
+				let bill = await Bill.find({
+					user: user._id,
+					room: user.room,
+					month: parseInt(month),
+					year: parseInt(year),
+				});
+
+				let priceOfMember = history.reduce((total, item) => {
+					if (item.members.length === 0) {
+						return total;
+					}
+					return total + item.totalPrice;
+				}, 0);
 
 				totalPricePurchase += priceOfMember;
 
@@ -145,11 +194,10 @@ let getAll = async (req, res) => {
 					realname: user.realname,
 					purchase: history,
 					priceOfMember: priceOfMember,
+					expense: bill[0].expense,
 				};
 			})
 		);
-
-		let priceSplit = Math.ceil(totalPricePurchase / room.memberCount);
 
 		res.status(200).json({
 			currentUser: currentUserData,
@@ -157,7 +205,6 @@ let getAll = async (req, res) => {
 			room: {
 				...room.toObject(),
 				totalPrice: totalPricePurchase,
-				priceSplit: priceSplit,
 			},
 		});
 	} catch (err) {
@@ -165,8 +212,40 @@ let getAll = async (req, res) => {
 	}
 };
 
+let deletePurchase = async (req, res) => {
+	try {
+		let id = req.body._id;
+		let purchase = await Purchase.findById({ _id: id });
+		let purchaseClone = { ...purchase.toObject() };
+		await Purchase.deleteOne({ _id: id });
+
+		let expense =
+			purchase.members.length > 0
+				? purchase.totalPrice / purchase.members.length
+				: 0;
+		let date = purchase.date;
+		let month = Number.parseInt(moment(date).format("M"));
+		let year = Number.parseInt(moment(date).format("YYYY"));
+		purchaseClone.members.forEach(async (member) => {
+			await updateBill(member, -expense, purchaseClone.room, month, year);
+		});
+
+		return res.status(200).send({
+			success: true,
+		});
+	} catch (error) {
+		return res.status(403).send({
+			success: false,
+			error: {
+				message: "Not found.",
+			},
+		});
+	}
+};
+
 module.exports = {
 	getAll: getAll,
 	postPurchase: postPurchase,
 	getHistory: getHistory,
+	deletePurchase: deletePurchase,
 };

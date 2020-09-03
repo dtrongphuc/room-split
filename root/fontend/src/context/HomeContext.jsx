@@ -43,6 +43,10 @@ export const HomeProvider = (props) => {
 		});
 	};
 
+	const handleDeletePurchase = (id) => {
+		mainService.postDeletePurchase({ _id: id }).then(() => getData());
+	};
+
 	useEffect(() => {
 		getData();
 	}, [getData]);
@@ -58,7 +62,7 @@ export const HomeProvider = (props) => {
 				setMonth,
 				setYear,
 				getData,
-				priceSplit: room.priceSplit,
+				handleDeletePurchase,
 			}}
 		>
 			{props.children}

@@ -30,7 +30,23 @@ const postPurchase = (params) => {
 	});
 };
 
+const postDeletePurchase = (data) => {
+	return new Promise((resolve, reject) => {
+		DataService.postDeletePurchase(data)
+			.then((res) => {
+				if (res) {
+					resolve(res.status);
+				}
+			})
+			.catch((err) => {
+				reject(err);
+			})
+			.catch((err) => {});
+	});
+};
+
 export const mainService = {
 	getAll,
 	postPurchase,
+	postDeletePurchase,
 };

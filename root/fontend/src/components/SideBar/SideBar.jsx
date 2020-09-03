@@ -64,12 +64,6 @@ export default function SideBar() {
 					</p>
 				</li>
 				<li className="d-flex align-items-center my-3">
-					<AttachMoneyRounded className="sidebar-icon" />
-					<p className="sidebar-text">
-						Tiền 1 người: {currencyFormat(room.priceSplit)}
-					</p>
-				</li>
-				<li className="d-flex align-items-center my-3">
 					<label form="month" className="mb-0 mr-2">
 						Thời gian:
 					</label>
