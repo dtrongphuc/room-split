@@ -15,8 +15,6 @@ export const HomeProvider = (props) => {
 
 	const getData = useCallback(async () => {
 		try {
-			console.log("get data");
-
 			setLoading(true);
 			const response = await mainService.getAll({
 				month: month,

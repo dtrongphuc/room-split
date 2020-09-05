@@ -21,6 +21,7 @@ export default function AccordionTable() {
 						<Panel header={member.realname} key={index}>
 							<History
 								purchase={member.purchase}
+								id={member._id}
 								loading={loading}
 								expense={member.priceOfMember - member.expense}
 							/>

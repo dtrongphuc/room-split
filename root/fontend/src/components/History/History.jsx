@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { Table, Popconfirm } from "antd";
+import { Table, Popconfirm, Typography } from "antd";
 import moment from "moment";
 
 import { HomeContext } from "../../context/HomeContext";
+const { Text, Title } = Typography;
 
-export default function History({ purchase, expense, loading }) {
+export default function History({ id, purchase, expense, loading }) {
 	const getDataTable = useCallback(() => {
 		return purchase.map((item, index) => {
 			let itemData = {
@@ -22,14 +23,9 @@ export default function History({ purchase, expense, loading }) {
 					currency: "VND",
 				}).format(item.totalPrice),
 				description: item.members.map((member) => (
-					<span
-						key={member.realname}
-						style={{
-							margin: "0 8px 0 0",
-						}}
-					>
-						{member.realname}
-					</span>
+					<li key={member.realname}>
+						<Text code>{member.realname}</Text>
+					</li>
 				)),
 			};
 			return itemData;
@@ -62,7 +58,7 @@ export default function History({ purchase, expense, loading }) {
 		{
 			title: "Số lượng",
 			dataIndex: "quantity",
-			width: "80px",
+			width: "10%",
 			align: "center",
 		},
 		{
@@ -78,23 +74,24 @@ export default function History({ purchase, expense, loading }) {
 			title: "Chức năng",
 			dataIndex: "operation",
 			render: (text, record) =>
-				dataTable.length > 0 ? (
+				dataTable.length > 0 && id === currentUser._id ? (
 					<Popconfirm
 						title="Chắc chắn xoá?"
 						onConfirm={() => handleDelete(record.key)}
 					>
-						<p>Xoá</p>
+						<span className="pointer" style={{ color: "blue" }}>
+							Xoá
+						</span>
 					</Popconfirm>
 				) : null,
 		},
 	]);
 	const [footer, setFooter] = useState("");
 
-	const { handleDeletePurchase } = useContext(HomeContext);
+	const { handleDeletePurchase, currentUser } = useContext(HomeContext);
 
 	useEffect(() => {
 		const data = getDataTable();
-		console.log("Effect");
 		setDataTable(data);
 
 		if (expense > 0) {
@@ -116,7 +113,6 @@ export default function History({ purchase, expense, loading }) {
 	}, [expense, getDataTable]);
 
 	const handleDelete = (key) => {
-		console.log(key);
 		handleDeletePurchase(key);
 		const dataFilter = dataTable.filter((item) => item.key !== key);
 		setDataTable(dataFilter);
@@ -126,13 +122,15 @@ export default function History({ purchase, expense, loading }) {
 		<Table
 			dataSource={dataTable}
 			columns={columns}
+			size="small"
 			bordered
 			expandable={{
 				rowExpandable: (record) => record.description.length !== 0,
 				expandedRowRender: (record) => (
-					<span style={{ display: "inline-block" }}>
+					<ul>
+						<Title level={5}>Thành viên:</Title>
 						{record.description}
-					</span>
+					</ul>
 				),
 			}}
 			pagination={false}

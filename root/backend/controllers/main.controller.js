@@ -162,7 +162,7 @@ let getAll = async (req, res) => {
 			realname: currentUser.realname,
 			purchase: currentHistory,
 			priceOfMember: priceOfCurrentUser,
-			expense: currentBill[0].expense,
+			expense: currentBill.length > 0 ? currentBill[0].expense : 0,
 		};
 
 		let membersData = await Promise.all(
@@ -194,7 +194,7 @@ let getAll = async (req, res) => {
 					realname: user.realname,
 					purchase: history,
 					priceOfMember: priceOfMember,
-					expense: bill[0].expense,
+					expense: bill.length > 0 ? bill[0].expense : 0,
 				};
 			})
 		);

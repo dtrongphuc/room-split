@@ -22,4 +22,8 @@
 	.options-form {
 		width: 240px !important;
 	}
+
+	.ant-input-number {
+		width: 90% !important;
+	}
 }

@@ -115,15 +115,15 @@ let login = async (req, res) => {
 						res.cookie("refreshToken", refreshToken, {
 							httpOnly: true,
 							maxAge: 864000000 * 365,
-							// sameSite: "none",
-							// secure: true,
+							sameSite: "none",
+							secure: true,
 						});
 
 						res.cookie("accessToken", accessToken, {
 							httpOnly: true,
 							maxAge: parseInt(process.env.COOKIE_LIFE),
-							// sameSite: "none",
-							// secure: true,
+							sameSite: "none",
+							secure: true,
 						});
 
 						return res
