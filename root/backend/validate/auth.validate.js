@@ -1,6 +1,6 @@
-const bcrypt = require("bcrypt");
-const Room = require("../models/room.model");
-const User = require("../models/user.model");
+const bcrypt = require('bcrypt');
+const Room = require('../models/room.model');
+const User = require('../models/user.model');
 
 function isEmpty(str) {
 	return !str || str.length === 0;
@@ -13,7 +13,10 @@ exports.postLogin = async (req, res, next) => {
 	let user = await User.findOne({ username: username });
 	if (!user) {
 		return res.status(401).send({
-			message: "Username or password is incorrect.",
+			success: false,
+			error: {
+				message: 'Username or password is incorrect.',
+			},
 		});
 	}
 
@@ -23,7 +26,7 @@ exports.postLogin = async (req, res, next) => {
 		return res.status(401).send({
 			success: false,
 			error: {
-				message: "Username or password is incorrect.",
+				message: 'Username or password is incorrect.',
 			},
 		});
 	}
@@ -42,7 +45,7 @@ exports.postRegister = (req, res, next) => {
 				return res.status(406).send({
 					success: false,
 					error: {
-						message: "Username is existed.",
+						message: 'Username is existed.',
 					},
 				});
 			} else if (
@@ -54,14 +57,14 @@ exports.postRegister = (req, res, next) => {
 				return res.status(406).send({
 					success: false,
 					error: {
-						message: "Input is empty.",
+						message: 'Input is empty.',
 					},
 				});
 			} else if (password != repassword) {
 				return res.status(406).send({
 					success: false,
 					error: {
-						message: "Password confirm is incorrect.",
+						message: 'Password confirm is incorrect.',
 					},
 				});
 			} else {
@@ -72,7 +75,7 @@ exports.postRegister = (req, res, next) => {
 		return res.status(403).send({
 			success: false,
 			error: {
-				message: `${error}` || "Error.",
+				message: `${error}` || 'Error.',
 			},
 		});
 	}
@@ -86,7 +89,7 @@ exports.postJoinRoom = (req, res, next) => {
 				return res.status(404).send({
 					success: false,
 					error: {
-						message: "Room code is not exist.",
+						message: 'Room code is not exist.',
 					},
 				});
 			}
@@ -106,7 +109,7 @@ exports.postCreateRoom = (req, res, next) => {
 			return res.status(403).send({
 				success: false,
 				error: {
-					message: "Input is empty.",
+					message: 'Input is empty.',
 				},
 			});
 		} else {

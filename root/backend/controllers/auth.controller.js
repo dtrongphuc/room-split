@@ -1,24 +1,24 @@
-const bcrypt = require("bcrypt");
-const moment = require("moment");
+const bcrypt = require('bcrypt');
+const moment = require('moment');
 
-const jwtHelper = require("../helpers/jwt.helper");
-var randomize = require("randomatic");
-var User = require("../models/user.model");
-var Room = require("../models/room.model");
-var Token = require("../models/token.model");
-var Bill = require("../models/bill.model");
+const jwtHelper = require('../helpers/jwt.helper');
+var randomize = require('randomatic');
+var User = require('../models/user.model');
+var Room = require('../models/room.model');
+var Token = require('../models/token.model');
+var Bill = require('../models/bill.model');
 
 const accessTokenSecret =
-	process.env.ACCESS_TOKEN_SECRET || "access-token-secret-@dtrongphuc";
-const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "3days";
+	process.env.ACCESS_TOKEN_SECRET || 'access-token-secret-@dtrongphuc';
+const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || '3days';
 
 const refreshTokenSecret =
-	process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-@dtrongphuc";
-const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650days";
+	process.env.REFRESH_TOKEN_SECRET || 'refresh-token-secret-@dtrongphuc';
+const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || '3650days';
 
 let createBill = async (username, roomID, month, year) => {
 	try {
-		let user = await User.findOne({ username: username }, "_id");
+		let user = await User.findOne({ username: username }, '_id');
 		await Bill.create({
 			user: user._id,
 			room: roomID,
@@ -32,7 +32,7 @@ let createBill = async (username, roomID, month, year) => {
 };
 
 let logout = async (req, res) => {
-	const TokenFromClient = req.headers["cookie"];
+	const TokenFromClient = req.headers['cookie'];
 	const refreshTokenFormClient =
 		TokenFromClient && TokenFromClient.split(/[\=\;]/)[1];
 
@@ -50,8 +50,8 @@ let logout = async (req, res) => {
 		);
 	}
 
-	res.clearCookie("accessToken");
-	res.clearCookie("refreshToken");
+	res.clearCookie('accessToken');
+	res.clearCookie('refreshToken');
 	res.status(200).send({ success: true });
 };
 
@@ -63,7 +63,7 @@ let login = async (req, res) => {
 		User.findOne({
 			username: req.body.username,
 		})
-			.populate("room")
+			.populate('room')
 			.then((data) => {
 				const decoded = {
 					_id: data._id,
@@ -110,19 +110,19 @@ let login = async (req, res) => {
 							{ useFindAndModify: false }
 						);
 
-						res.setHeader("Cache-Control", "private");
+						res.setHeader('Cache-Control', 'private');
 
-						res.cookie("refreshToken", refreshToken, {
+						res.cookie('refreshToken', refreshToken, {
 							httpOnly: true,
 							maxAge: 864000000 * 365,
-							sameSite: "none",
+							sameSite: 'none',
 							secure: true,
 						});
 
-						res.cookie("accessToken", accessToken, {
+						res.cookie('accessToken', accessToken, {
 							httpOnly: true,
 							maxAge: parseInt(process.env.COOKIE_LIFE),
-							sameSite: "none",
+							sameSite: 'none',
 							secure: true,
 						});
 
@@ -131,6 +131,17 @@ let login = async (req, res) => {
 							.json({ accessToken, refreshToken });
 					}
 				);
+			})
+			.catch(async (error) => {
+				await User.deleteOne({ username: req.body.username });
+
+				return res.status(404).send({
+					success: false,
+					error: {
+						message:
+							'Tài khoản chưa tham gia phòng, vui lòng đăng ký lại.',
+					},
+				});
 			});
 	} catch (error) {
 		return res.status(500).json(error);
@@ -155,14 +166,14 @@ let register = async (req, res) => {
 			success: true,
 			user: username,
 			error: {
-				messeage: "Create user successful.",
+				messeage: 'Create user successful.',
 			},
 		});
 	} catch (error) {
 		return res.status(403).send({
 			success: false,
 			error: {
-				messeage: error || "Error while create new user.",
+				messeage: error || 'Error while create new user.',
 			},
 		});
 	}
@@ -176,15 +187,15 @@ let joinRoom = (req, res) => {
 		Room.findOne({ code: roomCode }).then(async (room) => {
 			if (!room) {
 				return res.status(403).send({
-					messeage: "Room code is not exist.",
+					messeage: 'Room code is not exist.',
 				});
 			}
 
 			await createBill(
 				username,
 				room._id,
-				moment().format("M"),
-				moment().format("YYYY")
+				moment().format('M'),
+				moment().format('YYYY')
 			);
 
 			await Room.findByIdAndUpdate(
@@ -222,7 +233,7 @@ let createRoom = async (req, res) => {
 		let roomCode;
 		let isMatch;
 		do {
-			roomCode = randomize("0", 10);
+			roomCode = randomize('0', 10);
 			isMatch = await Room.findOne({ code: roomCode }).exec();
 		} while (isMatch);
 
@@ -238,8 +249,8 @@ let createRoom = async (req, res) => {
 			await createBill(
 				username,
 				newRoom._id,
-				moment().format("M"),
-				moment().format("YYYY")
+				moment().format('M'),
+				moment().format('YYYY')
 			);
 
 			User.findOneAndUpdate(
@@ -256,11 +267,11 @@ let createRoom = async (req, res) => {
 };
 
 let refreshToken = async (req, res) => {
-	const TokenFromClient = req.headers["cookie"];
+	const TokenFromClient = req.headers['cookie'];
 	const refreshTokenFormClient =
 		TokenFromClient && TokenFromClient.split(/[\=\;]/)[1];
 	const token = await Token.findOne({});
-	const tokenList = (token && token["tokenList"]) || {};
+	const tokenList = (token && token['tokenList']) || {};
 
 	if (refreshTokenFormClient && tokenList[refreshTokenFormClient]) {
 		try {
@@ -273,7 +284,7 @@ let refreshToken = async (req, res) => {
 						accessTokenSecret,
 						accessTokenLife
 					);
-					res.cookie("accessToken", accessToken, {
+					res.cookie('accessToken', accessToken, {
 						httpOnly: true,
 						maxAge: parseInt(process.env.COOKIE_LIFE),
 					});
@@ -281,10 +292,10 @@ let refreshToken = async (req, res) => {
 					return res.status(200).json({ accessToken });
 				});
 
-			console.log("renew access token");
+			console.log('renew access token');
 		} catch (error) {
 			res.status(403).send({
-				messeage: "Invalid refresh token.",
+				messeage: 'Invalid refresh token.',
 			});
 		}
 	} else {

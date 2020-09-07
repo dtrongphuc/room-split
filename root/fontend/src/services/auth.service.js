@@ -1,4 +1,4 @@
-import DataService from "../httpService";
+import DataService from '../httpService';
 
 export const authService = {
 	login,
