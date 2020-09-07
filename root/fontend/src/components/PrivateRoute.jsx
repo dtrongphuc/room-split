@@ -22,7 +22,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 						/>
 					)
 				) : (
-					<Loader loading={true} />
+					<Loader loading={true} fullscreen={true} />
 				)
 			}
 		/>

@@ -15,7 +15,7 @@ const PrivateRoute = lazy(() => import("./PrivateRoute"));
 function App() {
 	return (
 		<Router>
-			<Suspense fallback={<Loader loading={true} fullscreen={true} />}>
+			<Suspense fallback={<Loader loading={true}/>}>
 				<AuthProvider>
 					<Switch>
 						<Route exact path="/login">
