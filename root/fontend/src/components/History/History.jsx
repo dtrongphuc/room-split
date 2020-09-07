@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { Table, Popconfirm, Typography } from "antd";
+import { Table, Popconfirm, Typography, Button } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 import { HomeContext } from "../../context/HomeContext";
 const { Text, Title } = Typography;
 
-export default function History({ id, purchase, expense, loading }) {
+export default function History(props) {
+	const { id, purchase, expense, loading } = props;
+	const { handleDeletePurchase, currentUser } = useContext(HomeContext);
+
 	const getDataTable = useCallback(() => {
 		return purchase.map((item, index) => {
 			let itemData = {
@@ -79,16 +83,18 @@ export default function History({ id, purchase, expense, loading }) {
 						title="Chắc chắn xoá?"
 						onConfirm={() => handleDelete(record.key)}
 					>
-						<span className="pointer" style={{ color: "blue" }}>
+						<Button
+							icon={<DeleteOutlined />}
+							size="small"
+							className="d-flex align-items-center"
+						>
 							Xoá
-						</span>
+						</Button>
 					</Popconfirm>
 				) : null,
 		},
 	]);
 	const [footer, setFooter] = useState("");
-
-	const { handleDeletePurchase, currentUser } = useContext(HomeContext);
 
 	useEffect(() => {
 		const data = getDataTable();

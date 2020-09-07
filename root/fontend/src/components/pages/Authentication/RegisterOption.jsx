@@ -11,7 +11,6 @@ import { AuthContext } from "../../../context/AuthContext";
 
 import Loader from "../../Loader/Loader";
 import { authService } from "../../../services/auth.service";
-import "./Auth.css";
 
 const RegisterOption = () => {
 	const { setIsAuth } = useContext(AuthContext);

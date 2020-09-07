@@ -4,7 +4,6 @@ import { UserOutlined, LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 
 import { authService } from "../../../services/auth.service";
-import "./Auth.css";
 
 function Register() {
 	let history = useHistory();

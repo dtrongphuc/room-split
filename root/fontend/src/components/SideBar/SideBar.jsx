@@ -10,10 +10,9 @@ import moment from "moment";
 import locale from "antd/es/date-picker/locale/vi_VN";
 
 import { HomeContext } from "../../context/HomeContext";
-import "./SideBar.css";
 
 export default function SideBar() {
-	const { room, setMonth, setYear } = useContext(HomeContext);
+	const { room, setMonth, setYear, currentUser } = useContext(HomeContext);
 
 	const onChangeDate = (date, dateString) => {
 		if (dateString) {
@@ -34,8 +33,14 @@ export default function SideBar() {
 		<div className="sidebar">
 			<ul className="sidebar-list">
 				<li className="d-flex align-items-center my-3">
+					<span className="sidebar-title mx-1">Xin chào</span>
+					<span className="sidebar-title text-capitalize">
+						{currentUser.realname}
+					</span>
+				</li>
+				<li className="d-flex align-items-center my-3">
 					<HomeRounded className="sidebar-icon" />
-					<p className="special-title text-capitalize">{room.name}</p>
+					<p className="sidebar-text text-capitalize">{room.name}</p>
 				</li>
 				<li className="d-flex align-items-center my-3">
 					<VpnKeyRounded className="sidebar-icon" />

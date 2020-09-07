@@ -7,11 +7,11 @@ import {
 	ArrowDropDownRounded,
 } from "@material-ui/icons";
 
+import logo from "../../logo.svg";
 import AddModal from "../AddModal/AddModal";
 import { HomeContext } from "../../context/HomeContext";
 
 import { authService } from "../../services/auth.service";
-import "./Header.css";
 
 const Header = () => {
 	const { currentUser } = useContext(HomeContext);
@@ -60,10 +60,10 @@ const Header = () => {
 
 	return (
 		<header className="header">
-			<Navbar className="nav">
+			<Navbar>
 				<Navbar.Brand className="text text-dark">
 					<a href="/" className="text text-decoration-none pointer">
-						Trang chủ
+						<img src={logo} className="logo" alt="logo" />
 					</a>
 				</Navbar.Brand>
 				<div className="ml-auto d-flex align-items-center">

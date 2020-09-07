@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { authService } from "../../../services/auth.service";
 import Loader from "../../Loader/Loader";
-import "./Auth.css";
 
 const Login = () => {
 	let history = useHistory();

@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { HomeContext } from "../../context/HomeContext";
 import History from "../History/History";
-import "./Accordion.css";
 import { Collapse } from "antd";
 const { Panel } = Collapse;
 

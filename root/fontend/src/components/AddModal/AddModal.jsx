@@ -77,6 +77,14 @@ function AddModal({ ...props }) {
 		},
 	};
 
+	const disableDate = (current) => {
+		return (
+			current &&
+			(current < moment().startOf("month") ||
+				current > moment().endOf("month"))
+		);
+	};
+
 	return loading ? (
 		<Loader loading={loading} />
 	) : (
@@ -158,6 +166,7 @@ function AddModal({ ...props }) {
 						<DatePicker
 							id="formProductDate"
 							picker="date"
+							disabledDate={disableDate}
 							format="DD-MM-YYYY"
 						/>
 					</Form.Item>

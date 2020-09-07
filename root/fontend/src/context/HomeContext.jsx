@@ -42,6 +42,7 @@ export const HomeProvider = (props) => {
 	};
 
 	const handleDeletePurchase = (id) => {
+		setLoading(true);
 		mainService.postDeletePurchase({ _id: id }).then(() => getData());
 	};
 

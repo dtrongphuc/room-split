@@ -4,10 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./components/App.jsx";
 
 import "antd/dist/antd.css";
-import "./index.css";
-import "./style/common.css";
-import "./style/override.css";
-import "./style/responsive.css";
+import "./style/index.scss";
+import "./style/responsive.scss";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(<App />, document.getElementById("root"));

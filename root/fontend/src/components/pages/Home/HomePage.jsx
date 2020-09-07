@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 import Loader from "../../Loader/Loader";
-import "./HomePage.css";
 
 import { HomeProvider } from "../../../context/HomeContext";
 

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { MetroSpinner } from "react-spinners-kit";
+import { CircleSpinner, GridSpinner } from "react-spinners-kit";
 
-import "./Loader.css";
-export default function ({ loading }) {
+export default function ({ loading, fullscreen }) {
 	useEffect(() => {
+		if (fullscreen) return;
 		let element = document.querySelector(".loader-wrapper");
 		element.style.opacity = 1;
 		element.style.transform = "translate(-50% ,40px)";
@@ -11,10 +11,14 @@ export default function ({ loading }) {
 		return async () => {
 			element.style.transform = "translate(-50% ,-50px)";
 		};
-	}, []);
-	return (
+	}, [fullscreen]);
+	return !fullscreen ? (
 		<div className="loader-wrapper">
-			<MetroSpinner size={30} color="#1877F2" loading={loading} />
+			<CircleSpinner size={30} color="#69c0ff" loading={loading} />
+		</div>
+	) : (
+		<div className="loader-fullscreen">
+			<GridSpinner color="#69c0ff" size={62} />
 		</div>
 	);
 }
