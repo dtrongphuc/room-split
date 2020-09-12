@@ -98,6 +98,7 @@ const Login = () => {
 									type='text'
 									placeholder='Tài khoản'
 									autoComplete='username'
+									name='username'
 									required
 									value={username}
 									onChange={onChangeUsername}
@@ -124,6 +125,7 @@ const Login = () => {
 									type='password'
 									value={password}
 									required
+									name='password'
 									autoComplete='current-password'
 									onChange={onChangePassword}
 									placeholder='Mật khẩu'

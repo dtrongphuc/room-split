@@ -117,6 +117,7 @@ let login = async (req, res) => {
 							maxAge: 864000000 * 365,
 							sameSite: 'none',
 							secure: true,
+							//domain: process.env.DOMAIN,
 						});
 
 						res.cookie('accessToken', accessToken, {
@@ -124,6 +125,7 @@ let login = async (req, res) => {
 							maxAge: parseInt(process.env.COOKIE_LIFE),
 							sameSite: 'none',
 							secure: true,
+							//domain: process.env.DOMAIN,
 						});
 
 						return res

@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
-import { Modal, Alert } from "react-bootstrap";
-import moment from "moment";
+import React, { useState, useContext } from 'react';
+import { Modal, Alert } from 'react-bootstrap';
+import moment from 'moment';
 import {
 	Form,
 	Input,
@@ -10,20 +10,19 @@ import {
 	Row,
 	Col,
 	Checkbox,
-} from "antd";
+} from 'antd';
 
-import { HomeContext } from "../../context/HomeContext";
-import { mainService } from "../../services/main.service";
-import Loader from "../Loader/Loader";
+import { HomeContext } from '../../context/HomeContext';
+import { mainService } from '../../services/main.service';
+import Loader from '../Loader/Loader';
 
 function AddModal({ ...props }) {
 	const { currentUser, membersName, getData } = useContext(HomeContext);
 	const [loading, setLoading] = useState(false);
-	const [message, setMessage] = useState("");
+	const [message, setMessage] = useState('');
 
 	// eslint-disable-next-line
 	const handleSubmit = (values) => {
-		console.log(values);
 		setLoading(true);
 		try {
 			const data = {
@@ -31,8 +30,8 @@ function AddModal({ ...props }) {
 				productName: values.productName,
 				productPrice: values.productPrice,
 				productQuantity: values.productQuantity,
-				productDate: values.productDate.format("YYYY-MM-DD"),
-				members: values["member-checkbox-group"],
+				productDate: values.productDate.format('YYYY-MM-DD'),
+				members: values['member-checkbox-group'],
 			};
 
 			mainService
@@ -45,10 +44,10 @@ function AddModal({ ...props }) {
 					}
 				})
 				.catch((err) => {
-					setMessage("Có lỗi xảy ra.");
+					setMessage('Có lỗi xảy ra.');
 				});
 		} catch (error) {
-			setMessage("Có lỗi xảy ra.");
+			setMessage('Có lỗi xảy ra.');
 		}
 	};
 
@@ -80,29 +79,29 @@ function AddModal({ ...props }) {
 	const disableDate = (current) => {
 		return (
 			current &&
-			(current < moment().startOf("month") ||
-				current > moment().endOf("month"))
+			(current < moment().startOf('month') ||
+				current > moment().endOf('month'))
 		);
 	};
 
 	return loading ? (
 		<Loader loading={loading} />
 	) : (
-		<Modal {...props} aria-labelledby="contained-modal-title-vcenter">
+		<Modal {...props} aria-labelledby='contained-modal-title-vcenter'>
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
+				<Modal.Title id='contained-modal-title-vcenter'>
 					Thêm sản phẩm
 				</Modal.Title>
 			</Modal.Header>
-			<Modal.Body className="show-grid">
-				{message ? <Alert className="alert-dark">{message}</Alert> : ""}
+			<Modal.Body className='show-grid'>
+				{message ? <Alert className='alert-dark'>{message}</Alert> : ''}
 				<Form
 					{...layout}
-					name="basic"
+					name='basic'
 					initialValues={{
 						productQuantity: 1,
 						// eslint-disable-next-line
-						["member-checkbox-group"]: membersName.map(
+						['member-checkbox-group']: membersName.map(
 							(member) => member._id
 						),
 						productDate: moment(),
@@ -110,12 +109,12 @@ function AddModal({ ...props }) {
 					onFinish={handleSubmit}
 				>
 					<Form.Item
-						label="Tên sản phẩm"
-						name="productName"
+						label='Tên sản phẩm'
+						name='productName'
 						rules={[
 							{
 								required: true,
-								message: "Vui lòng nhập tên sản phẩm!",
+								message: 'Vui lòng nhập tên sản phẩm!',
 							},
 						]}
 					>
@@ -125,12 +124,12 @@ function AddModal({ ...props }) {
 						<Col span={12}>
 							<Form.Item
 								{...middleLayout}
-								label="Giá"
-								name="productPrice"
+								label='Giá'
+								name='productPrice'
 								rules={[
 									{
 										required: true,
-										message: "Vui lòng nhập giá tiền!",
+										message: 'Vui lòng nhập giá tiền!',
 									},
 								]}
 							>
@@ -140,12 +139,12 @@ function AddModal({ ...props }) {
 						<Col span={12}>
 							<Form.Item
 								{...middleLayout}
-								label="Số lượng"
-								name="productQuantity"
+								label='Số lượng'
+								name='productQuantity'
 								rules={[
 									{
 										required: true,
-										message: "Vui lòng nhập số lượng!",
+										message: 'Vui lòng nhập số lượng!',
 									},
 								]}
 							>
@@ -154,30 +153,30 @@ function AddModal({ ...props }) {
 						</Col>
 					</Row>
 					<Form.Item
-						label="Ngày"
-						name="productDate"
+						label='Ngày'
+						name='productDate'
 						rules={[
 							{
 								required: true,
-								message: "Vui lòng nhập ngày!",
+								message: 'Vui lòng nhập ngày!',
 							},
 						]}
 					>
 						<DatePicker
-							id="formProductDate"
-							picker="date"
+							id='formProductDate'
+							picker='date'
 							disabledDate={disableDate}
-							format="DD-MM-YYYY"
+							format='DD-MM-YYYY'
 						/>
 					</Form.Item>
-					<Form.Item name="member-checkbox-group" label="Tham gia">
+					<Form.Item name='member-checkbox-group' label='Tham gia'>
 						<Checkbox.Group>
 							<Row>
 								{membersName.map((member, index) => (
 									<Col span={12} key={index + 1}>
 										<Checkbox
 											value={member._id}
-											style={{ lineHeight: "32px" }}
+											style={{ lineHeight: '32px' }}
 										>
 											{member.name}
 										</Checkbox>
@@ -187,7 +186,7 @@ function AddModal({ ...props }) {
 						</Checkbox.Group>
 					</Form.Item>
 					<Form.Item {...tailLayout}>
-						<Button type="primary" htmlType="submit">
+						<Button type='primary' htmlType='submit'>
 							Thêm
 						</Button>
 					</Form.Item>
