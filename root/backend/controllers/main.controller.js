@@ -51,17 +51,14 @@ let postPurchase = async (req, res) => {
 };
 
 let updateBill = async (id, expense, room, month, year) => {
-	let bill = await Bill.aggregate([
-		{
-			$match: {
-				user: mongoose.Types.ObjectId(id),
-				room: mongoose.Types.ObjectId(room),
-				month: month,
-				year: year,
-			},
-		},
-	]);
-	if (!bill) {
+	let bill = await Bill.find({
+		user: mongoose.Types.ObjectId(id),
+		room: mongoose.Types.ObjectId(room),
+		month: parseInt(month),
+		year: parseInt(year),
+	});
+
+	if (bill.length) {
 		await Bill.create({
 			user: mongoose.Types.ObjectId(id),
 			room: mongoose.Types.ObjectId(room),
