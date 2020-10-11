@@ -133,7 +133,20 @@ function AddModal({ ...props }) {
 									},
 								]}
 							>
-								<InputNumber min={0} />
+								<InputNumber
+									min={0}
+									formatter={(value) =>
+										`$ ${value}`.replace(
+											/\B(?=(\d{3})+(?!\d))/g,
+											','
+										)
+									}
+									p
+									arser={(value) =>
+										value.replace(/\$\s?|(,*)/g, '')
+									}
+									step={1000}
+								/>
 							</Form.Item>
 						</Col>
 						<Col span={12}>
