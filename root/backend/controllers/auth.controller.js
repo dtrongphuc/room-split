@@ -116,7 +116,7 @@ let login = async (req, res) => {
 							httpOnly: true,
 							maxAge: 864000000 * 365,
 							sameSite: 'none',
-							secure: true,
+							//secure: true,
 							//domain: process.env.DOMAIN,
 						});
 
@@ -124,7 +124,7 @@ let login = async (req, res) => {
 							httpOnly: true,
 							maxAge: parseInt(process.env.COOKIE_LIFE),
 							sameSite: 'none',
-							secure: true,
+							//secure: true,
 							//domain: process.env.DOMAIN,
 						});
 
@@ -137,7 +137,7 @@ let login = async (req, res) => {
 			.catch(async (error) => {
 				await User.deleteOne({ username: req.body.username });
 
-				return res.status(404).send({
+				return res.status(403).send({
 					success: false,
 					error: {
 						message:
@@ -189,7 +189,7 @@ let joinRoom = (req, res) => {
 		Room.findOne({ code: roomCode }).then(async (room) => {
 			if (!room) {
 				return res.status(403).send({
-					messeage: 'Room code is not exist.',
+					messeage: 'Mã phòng không tồn tại.',
 				});
 			}
 

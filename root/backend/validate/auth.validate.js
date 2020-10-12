@@ -12,10 +12,10 @@ exports.postLogin = async (req, res, next) => {
 
 	let user = await User.findOne({ username: username });
 	if (!user) {
-		return res.status(401).send({
+		return res.status(403).send({
 			success: false,
 			error: {
-				message: 'Username or password is incorrect.',
+				message: 'Tài khoản chưa tồn tại .',
 			},
 		});
 	}
@@ -23,10 +23,10 @@ exports.postLogin = async (req, res, next) => {
 	const match = await bcrypt.compare(password, user.password);
 
 	if (!match) {
-		return res.status(401).send({
+		return res.status(403).send({
 			success: false,
 			error: {
-				message: 'Username or password is incorrect.',
+				message: 'Tên tài khoản hoặc mật khẩu chưa đúng.',
 			},
 		});
 	}
@@ -45,7 +45,7 @@ exports.postRegister = (req, res, next) => {
 				return res.status(406).send({
 					success: false,
 					error: {
-						message: 'Username is existed.',
+						message: 'Tên tài khoản đã tồn tại.',
 					},
 				});
 			} else if (
@@ -57,14 +57,14 @@ exports.postRegister = (req, res, next) => {
 				return res.status(406).send({
 					success: false,
 					error: {
-						message: 'Input is empty.',
+						message: 'Dữ liệu rỗng.',
 					},
 				});
 			} else if (password != repassword) {
 				return res.status(406).send({
 					success: false,
 					error: {
-						message: 'Password confirm is incorrect.',
+						message: 'Mật khẩu xác nhận không đúng.',
 					},
 				});
 			} else {
